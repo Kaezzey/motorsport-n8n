@@ -1,0 +1,23 @@
+{
+  "name": "motorsport-telemetry-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Auditable n8n prototype for bounded motorsport telemetry quality decisions.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19 <25"
+  },
+  "scripts": {
+    "agent": "node src/server.js",
+    "ingest": "node src/ingest-cli.js",
+    "validate": "node src/cli.js",
+    "test": "node --test",
+    "test:smoke": "node scripts/smoke-check.js",
+    "n8n:import": "N8N_DIAGNOSTICS_ENABLED=false N8N_USER_FOLDER=.local/n8n n8n import:workflow --input=workflows/telemetry-quality-agent.json",
+    "n8n:publish": "N8N_DIAGNOSTICS_ENABLED=false N8N_USER_FOLDER=.local/n8n n8n publish:workflow --id=TelemetryQualityAgentWeek1",
+    "n8n:start": "N8N_DIAGNOSTICS_ENABLED=false N8N_VERSION_NOTIFICATIONS_ENABLED=false N8N_TEMPLATES_ENABLED=false N8N_UNVERIFIED_PACKAGES_ENABLED=false N8N_USER_FOLDER=.local/n8n N8N_PORT=5678 n8n start"
+  },
+  "devDependencies": {
+    "n8n": "2.30.5"
+  }
+}

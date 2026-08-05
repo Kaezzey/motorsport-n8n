@@ -1,0 +1,31 @@
+{
+  "session_id": "2026-08-05-hampton-downs-test",
+  "lap_id": "lap-08-corrupt",
+  "purpose": "model_training",
+  "expected_sample_rate_hz": 20,
+  "units": {
+    "timestamp_ms": "ms",
+    "speed_kph": "mph",
+    "throttle_pct": "%",
+    "brake_pressure_bar": "bar",
+    "steering_deg": "deg",
+    "rpm": "rpm",
+    "gear": "index",
+    "longitudinal_g": "g",
+    "lateral_g": "g",
+    "yaw_rate_deg_s": "deg/s",
+    "wheel_speed_kph": "km/h"
+  },
+  "samples": [
+    {"timestamp_ms":0,"speed_kph":110,"throttle_pct":70,"brake_pressure_bar":0,"steering_deg":2,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":0.1,"yaw_rate_deg_s":0.5,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":50,"speed_kph":110,"throttle_pct":74,"brake_pressure_bar":0,"steering_deg":4,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":0.2,"yaw_rate_deg_s":1.2,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":100,"speed_kph":110,"throttle_pct":80,"brake_pressure_bar":0,"steering_deg":8,"rpm":7000,"gear":4,"longitudinal_g":0.3,"lateral_g":0.4,"yaw_rate_deg_s":3.1,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":150,"speed_kph":110,"throttle_pct":130,"brake_pressure_bar":0,"steering_deg":12,"rpm":7000,"gear":4,"longitudinal_g":0.3,"lateral_g":0.6,"yaw_rate_deg_s":5.2,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":200,"speed_kph":110,"throttle_pct":90,"brake_pressure_bar":0,"steering_deg":8,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":0.4,"yaw_rate_deg_s":3.3,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":200,"speed_kph":110,"throttle_pct":60,"brake_pressure_bar":40,"steering_deg":2,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":0.1,"yaw_rate_deg_s":0.8,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":300,"speed_kph":110,"throttle_pct":20,"brake_pressure_bar":70,"steering_deg":-4,"rpm":7000,"gear":4,"longitudinal_g":0.1,"lateral_g":-0.2,"yaw_rate_deg_s":-1.4,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":350,"speed_kph":110,"throttle_pct":10,"brake_pressure_bar":70,"steering_deg":-8,"rpm":7000,"gear":4,"longitudinal_g":0.1,"lateral_g":-0.4,"yaw_rate_deg_s":-3.2,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":400,"speed_kph":110,"throttle_pct":25,"brake_pressure_bar":40,"steering_deg":-5,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":-0.2,"yaw_rate_deg_s":-1.8,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55},
+    {"timestamp_ms":450,"speed_kph":110,"throttle_pct":50,"brake_pressure_bar":0,"steering_deg":0,"rpm":7000,"gear":4,"longitudinal_g":0.2,"lateral_g":0,"yaw_rate_deg_s":0,"wheel_speed_fl_kph":55,"wheel_speed_fr_kph":55,"wheel_speed_rl_kph":55,"wheel_speed_rr_kph":55}
+  ]
+}

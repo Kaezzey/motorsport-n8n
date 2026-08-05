@@ -1,0 +1,86 @@
+{
+  "policy_id": "week-1-quality-gate-v1",
+  "required_top_level": [
+    "session_id",
+    "lap_id",
+    "purpose",
+    "expected_sample_rate_hz",
+    "units",
+    "samples"
+  ],
+  "required_channels": [
+    "timestamp_ms",
+    "speed_kph",
+    "throttle_pct",
+    "brake_pressure_bar",
+    "steering_deg",
+    "rpm",
+    "gear",
+    "longitudinal_g",
+    "lateral_g",
+    "yaw_rate_deg_s",
+    "wheel_speed_fl_kph",
+    "wheel_speed_fr_kph",
+    "wheel_speed_rl_kph",
+    "wheel_speed_rr_kph"
+  ],
+  "units": {
+    "timestamp_ms": "ms",
+    "speed_kph": "km/h",
+    "throttle_pct": "%",
+    "brake_pressure_bar": "bar",
+    "steering_deg": "deg",
+    "rpm": "rpm",
+    "gear": "index",
+    "longitudinal_g": "g",
+    "lateral_g": "g",
+    "yaw_rate_deg_s": "deg/s",
+    "wheel_speed_kph": "km/h"
+  },
+  "ranges": {
+    "speed_kph": [0, 400],
+    "throttle_pct": [-2, 105],
+    "brake_pressure_bar": [-5, 200],
+    "steering_deg": [-900, 900],
+    "rpm": [0, 25000],
+    "gear": [-1, 10],
+    "longitudinal_g": [-6, 4],
+    "lateral_g": [-7, 7],
+    "yaw_rate_deg_s": [-360, 360],
+    "wheel_speed_fl_kph": [0, 450],
+    "wheel_speed_fr_kph": [0, 450],
+    "wheel_speed_rl_kph": [0, 450],
+    "wheel_speed_rr_kph": [0, 450]
+  },
+  "thresholds": {
+    "minimum_samples": 10,
+    "sample_rate_tolerance_ratio": 0.15,
+    "timestamp_jitter_ratio": 0.25,
+    "maximum_missing_ratio": 0.01,
+    "frozen_variance_epsilon": 0.000001,
+    "maximum_wheel_speed_delta_kph": 15,
+    "maximum_speed_step_kph": 45,
+    "maximum_rpm_step": 6000,
+    "minimum_brake_pressure_bar": 15,
+    "minimum_braking_deceleration_g": -0.08,
+    "warnings_before_review": 2
+  },
+  "hard_failure_checks": [
+    "schema.required",
+    "schema.purpose",
+    "samples.minimum",
+    "timestamps.monotonic",
+    "channels.missing",
+    "units.canonical",
+    "ranges.physical"
+  ],
+  "review_trigger_checks": [
+    "manifest.review_required",
+    "manifest.match_confidence"
+  ],
+  "allowed_purposes": [
+    "driver_coaching",
+    "vehicle_performance",
+    "model_training"
+  ]
+}

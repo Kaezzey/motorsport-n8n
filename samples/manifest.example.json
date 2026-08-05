@@ -1,0 +1,36 @@
+{
+  "manifest_version": "1.0",
+  "session_id": "2026-08-05-hampton-downs-test",
+  "created_at": "2026-08-05T09:00:00.000Z",
+  "pre_cleaned": true,
+  "defaults": {
+    "purpose": "driver_coaching",
+    "expected_sample_rate_hz": 20,
+    "units": {
+      "timestamp_ms": "ms",
+      "speed_kph": "km/h",
+      "throttle_pct": "%",
+      "brake_pressure_bar": "bar",
+      "steering_deg": "deg",
+      "rpm": "rpm",
+      "gear": "index",
+      "longitudinal_g": "g",
+      "lateral_g": "g",
+      "yaw_rate_deg_s": "deg/s",
+      "wheel_speed_kph": "km/h"
+    }
+  },
+  "laps": [
+    {
+      "lap_id": "lap-07",
+      "file": "clean-push-lap.json"
+    },
+    {
+      "lap_id": "lap-08-corrupt",
+      "file": "corrupted-lap.json",
+      "overrides": {
+        "purpose": "model_training"
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+node_modules/
+.local/
+.env
+audit/*.jsonl
+audit/*.tmp
+coverage/
+data/incoming-manifests/
+.DS_Store
+npm-debug.log*

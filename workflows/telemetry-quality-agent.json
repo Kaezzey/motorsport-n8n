@@ -1,0 +1,211 @@
+{
+  "id": "TelemetryQualityAgentWeek1",
+  "name": "Telemetry Quality Agent - Week 1 Prototype",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Bounded telemetry agent\nReceives one canonical lap, delegates deterministic diagnostics, then gates downstream work. Every validation is recorded by the telemetry service and every orchestration run is retained by n8n.",
+        "height": 250,
+        "width": 380,
+        "color": 5
+      },
+      "id": "8be20a89-d964-423d-a560-5ee1f7529121",
+      "name": "Design intent",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-700, -240]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "telemetry/validate",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "dd5ed60c-46f8-48cb-a320-f921aca3cbee",
+      "name": "Telemetry received",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-600, 100],
+      "webhookId": "20fcbdf6-8121-4f6e-8886-9bbf5558a980"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:3100/validate",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "8418c422-3c18-480c-9494-92965ea229dc",
+      "name": "Run bounded diagnostics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-340, 100]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "54047628-edf6-4574-a1e6-8748d6615a44",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "accept",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "27e04a2e-f101-449b-91b2-b1692f887312",
+      "name": "Accepted by policy?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-80, 100]
+    },
+    {
+      "parameters": {},
+      "id": "95d4de9b-ac54-45e7-aa16-d0e2d02def5a",
+      "name": "AUTHORIZED - downstream placeholder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [180, -20]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "79b5ad3f-70d0-442e-aed4-285e4757dd16",
+      "name": "Accept response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [440, -20]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2dc220b-02a0-48f0-8824-1df07423f349",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "review",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ce732851-0094-402c-8437-7276c4be1f97",
+      "name": "Human review required?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [180, 180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 202
+        }
+      },
+      "id": "fda20bdc-ee9c-4b94-bfe0-b3735b600ff0",
+      "name": "Review queue response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [440, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "a3e57f8a-26f2-4133-a2bc-626d816b75d9",
+      "name": "Reject response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [440, 260]
+    },
+    {
+      "parameters": {
+        "content": "### Human remains in the loop\n`review` and `reject` can never reach downstream processing. Overrides are separate, attributed events requiring a reviewer and reason.",
+        "height": 190,
+        "width": 360,
+        "color": 3
+      },
+      "id": "e92a26f2-f5f3-472d-8766-c47a648831ec",
+      "name": "Guardrail note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 390]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telemetry received": {
+      "main": [[{"node": "Run bounded diagnostics", "type": "main", "index": 0}]]
+    },
+    "Run bounded diagnostics": {
+      "main": [[{"node": "Accepted by policy?", "type": "main", "index": 0}]]
+    },
+    "Accepted by policy?": {
+      "main": [
+        [{"node": "AUTHORIZED - downstream placeholder", "type": "main", "index": 0}],
+        [{"node": "Human review required?", "type": "main", "index": 0}]
+      ]
+    },
+    "AUTHORIZED - downstream placeholder": {
+      "main": [[{"node": "Accept response", "type": "main", "index": 0}]]
+    },
+    "Human review required?": {
+      "main": [
+        [{"node": "Review queue response", "type": "main", "index": 0}],
+        [{"node": "Reject response", "type": "main", "index": 0}]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "versionId": "097be895-c8d7-4f29-8531-eac2262e49c3",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

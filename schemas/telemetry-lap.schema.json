@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/telemetry-lap.schema.json",
+  "title": "Canonical motorsport telemetry lap",
+  "type": "object",
+  "required": ["session_id", "lap_id", "purpose", "expected_sample_rate_hz", "units", "samples"],
+  "properties": {
+    "session_id": { "type": "string", "minLength": 1 },
+    "lap_id": { "type": "string", "minLength": 1 },
+    "purpose": {
+      "type": "string",
+      "enum": ["driver_coaching", "vehicle_performance", "model_training"]
+    },
+    "expected_sample_rate_hz": { "type": "number", "exclusiveMinimum": 0 },
+    "units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp_ms", "speed_kph", "throttle_pct", "brake_pressure_bar", "steering_deg", "rpm", "gear", "longitudinal_g", "lateral_g", "yaw_rate_deg_s", "wheel_speed_kph"],
+      "properties": {
+        "timestamp_ms": { "const": "ms" },
+        "speed_kph": { "const": "km/h" },
+        "throttle_pct": { "const": "%" },
+        "brake_pressure_bar": { "const": "bar" },
+        "steering_deg": { "const": "deg" },
+        "rpm": { "const": "rpm" },
+        "gear": { "const": "index" },
+        "longitudinal_g": { "const": "g" },
+        "lateral_g": { "const": "g" },
+        "yaw_rate_deg_s": { "const": "deg/s" },
+        "wheel_speed_kph": { "const": "km/h" }
+      }
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 10,
+      "items": { "$ref": "#/$defs/sample" }
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "sample": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["timestamp_ms", "speed_kph", "throttle_pct", "brake_pressure_bar", "steering_deg", "rpm", "gear", "longitudinal_g", "lateral_g", "yaw_rate_deg_s", "wheel_speed_fl_kph", "wheel_speed_fr_kph", "wheel_speed_rl_kph", "wheel_speed_rr_kph"],
+      "properties": {
+        "timestamp_ms": { "type": "number" },
+        "speed_kph": { "type": "number", "minimum": 0, "maximum": 400 },
+        "throttle_pct": { "type": "number", "minimum": -2, "maximum": 105 },
+        "brake_pressure_bar": { "type": "number", "minimum": -5, "maximum": 200 },
+        "steering_deg": { "type": "number", "minimum": -900, "maximum": 900 },
+        "rpm": { "type": "number", "minimum": 0, "maximum": 25000 },
+        "gear": { "type": "integer", "minimum": -1, "maximum": 10 },
+        "longitudinal_g": { "type": "number", "minimum": -6, "maximum": 4 },
+        "lateral_g": { "type": "number", "minimum": -7, "maximum": 7 },
+        "yaw_rate_deg_s": { "type": "number", "minimum": -360, "maximum": 360 },
+        "wheel_speed_fl_kph": { "type": "number", "minimum": 0, "maximum": 450 },
+        "wheel_speed_fr_kph": { "type": "number", "minimum": 0, "maximum": 450 },
+        "wheel_speed_rl_kph": { "type": "number", "minimum": 0, "maximum": 450 },
+        "wheel_speed_rr_kph": { "type": "number", "minimum": 0, "maximum": 450 }
+      }
+    }
+  }
+}
