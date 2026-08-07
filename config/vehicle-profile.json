@@ -1,0 +1,98 @@
+{
+  "profile_id": "n9115-workbench-logger-v1",
+  "profile_version": "1.0",
+  "status": "prototype_calibrated",
+  "scope": {
+    "vehicle_code": "N9115",
+    "source_schema": "motorsport-workbench-csv/1.0",
+    "calibration_event": "T07_QUE_250729",
+    "calibration_files": 15,
+    "calibration_rows": 980765
+  },
+  "physical_ranges": {
+    "speed_kph": [0, 300],
+    "throttle_pct": [-2, 107],
+    "brake_pressure_bar": [-3, 120],
+    "steering_deg": [-540, 540],
+    "rpm": [0, 9500],
+    "gear": [0, 7],
+    "longitudinal_g": [-20, 20],
+    "lateral_g": [-20, 20],
+    "yaw_rate_deg_s": [-180, 180],
+    "wheel_speed_fl_kph": [0, 320],
+    "wheel_speed_fr_kph": [0, 320],
+    "wheel_speed_rl_kph": [0, 320],
+    "wheel_speed_rr_kph": [0, 320],
+    "gps_course_deg": [0, 360],
+    "gps_latitude_deg": [-90, 90],
+    "gps_longitude_deg": [-180, 180]
+  },
+  "frozen_signals": {
+    "speed_kph": { "epsilon": 0.001, "minimum_duration_ms": 2000, "active_when": { "speed_kph": { "minimum": 15 } } },
+    "rpm": { "epsilon": 0.01, "minimum_duration_ms": 2000, "active_when": { "rpm": { "minimum": 1000 } } },
+    "yaw_rate_deg_s": { "epsilon": 0.001, "minimum_duration_ms": 750, "active_when": { "speed_kph": { "minimum": 30 } } },
+    "wheel_speed_fl_kph": { "epsilon": 0.001, "minimum_duration_ms": 2000, "active_when": { "speed_kph": { "minimum": 15 } } },
+    "wheel_speed_fr_kph": { "epsilon": 0.001, "minimum_duration_ms": 2000, "active_when": { "speed_kph": { "minimum": 15 } } },
+    "wheel_speed_rl_kph": { "epsilon": 0.001, "minimum_duration_ms": 2000, "active_when": { "speed_kph": { "minimum": 15 } } },
+    "wheel_speed_rr_kph": { "epsilon": 0.001, "minimum_duration_ms": 2000, "active_when": { "speed_kph": { "minimum": 15 } } }
+  },
+  "maximum_derivative_rates": {
+    "speed_kph": 3000,
+    "rpm": 150000,
+    "steering_deg": 1500,
+    "longitudinal_g": 2000,
+    "lateral_g": 3500,
+    "yaw_rate_deg_s": 1000,
+    "wheel_speed_fl_kph": 800,
+    "wheel_speed_fr_kph": 1400,
+    "wheel_speed_rl_kph": 1800,
+    "wheel_speed_rr_kph": 1700
+  },
+  "spike_detection": {
+    "maximum_neighbor_interval_ms": 250,
+    "channels": {
+      "speed_kph": { "minimum_deviation": 15, "maximum_recovery_difference": 5 },
+      "rpm": { "minimum_deviation": 2000, "maximum_recovery_difference": 500 },
+      "steering_deg": { "minimum_deviation": 60, "maximum_recovery_difference": 15 },
+      "longitudinal_g": { "minimum_deviation": 3, "maximum_recovery_difference": 1 },
+      "lateral_g": { "minimum_deviation": 3, "maximum_recovery_difference": 1 },
+      "yaw_rate_deg_s": { "minimum_deviation": 40, "maximum_recovery_difference": 10 }
+    }
+  },
+  "dropout_detection": {
+    "minimum_review_duration_ms": 50,
+    "maximum_evidence_intervals": 20
+  },
+  "gps": {
+    "optional_for_canonical_input": true,
+    "required_for_source_schema": "motorsport-workbench-csv/1.0",
+    "moving_speed_kph": 20,
+    "maximum_held_duration_ms_while_moving": 1000,
+    "maximum_jump_distance_m": 30,
+    "maximum_implied_speed_m_s": 120,
+    "maximum_invalid_fix_ratio": 0,
+    "track_envelope": {
+      "track_names": ["Queensland Raceway"],
+      "latitude_deg": [-27.70, -27.68],
+      "longitude_deg": [152.64, 152.67]
+    }
+  },
+  "calibration_evidence": {
+    "source": "ignored local copy; sanitized summary committed separately",
+    "observed_ranges_are_descriptive_not_automatic_policy": true,
+    "known_finding": "The mapped *yaw channel was constant at -27.306659169604096 deg/s in all 15 calibration files.",
+    "observed_ranges": {
+      "speed_kph": [0, 242.5998779296875],
+      "throttle_pct": [0, 105.99994659423828],
+      "brake_pressure_bar": [-1.4617662500000002, 61.55552000000001],
+      "steering_deg": [-234.0999799905247, 253.29991495499735],
+      "rpm": [0, 9111.996619903863],
+      "gear": [1, 7],
+      "longitudinal_g": [-8.761032751850786, 8.51542080780325],
+      "lateral_g": [-14.860795392985883, 17.77993221595805],
+      "yaw_rate_deg_s": [-27.306659169604096, -27.306659169604096],
+      "gps_latitude_deg": [-27.694313386137342, -27.686936781833726],
+      "gps_longitude_deg": [152.65079376082306, 152.65516508189185]
+    }
+  }
+}

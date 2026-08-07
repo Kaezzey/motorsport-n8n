@@ -28,7 +28,10 @@
         "longitudinal_g": { "const": "g" },
         "lateral_g": { "const": "g" },
         "yaw_rate_deg_s": { "const": "deg/s" },
-        "wheel_speed_kph": { "const": "km/h" }
+        "wheel_speed_kph": { "const": "km/h" },
+        "gps_course_deg": { "const": "deg" },
+        "gps_latitude_deg": { "const": "deg" },
+        "gps_longitude_deg": { "const": "deg" }
       }
     },
     "samples": {
@@ -45,19 +48,22 @@
       "required": ["timestamp_ms", "speed_kph", "throttle_pct", "brake_pressure_bar", "steering_deg", "rpm", "gear", "longitudinal_g", "lateral_g", "yaw_rate_deg_s", "wheel_speed_fl_kph", "wheel_speed_fr_kph", "wheel_speed_rl_kph", "wheel_speed_rr_kph"],
       "properties": {
         "timestamp_ms": { "type": "number" },
-        "speed_kph": { "type": "number", "minimum": 0, "maximum": 400 },
-        "throttle_pct": { "type": "number", "minimum": -2, "maximum": 105 },
-        "brake_pressure_bar": { "type": "number", "minimum": -5, "maximum": 200 },
-        "steering_deg": { "type": "number", "minimum": -900, "maximum": 900 },
-        "rpm": { "type": "number", "minimum": 0, "maximum": 25000 },
-        "gear": { "type": "integer", "minimum": -1, "maximum": 10 },
-        "longitudinal_g": { "type": "number", "minimum": -6, "maximum": 4 },
-        "lateral_g": { "type": "number", "minimum": -7, "maximum": 7 },
-        "yaw_rate_deg_s": { "type": "number", "minimum": -360, "maximum": 360 },
-        "wheel_speed_fl_kph": { "type": "number", "minimum": 0, "maximum": 450 },
-        "wheel_speed_fr_kph": { "type": "number", "minimum": 0, "maximum": 450 },
-        "wheel_speed_rl_kph": { "type": "number", "minimum": 0, "maximum": 450 },
-        "wheel_speed_rr_kph": { "type": "number", "minimum": 0, "maximum": 450 }
+        "speed_kph": { "type": "number", "minimum": 0, "maximum": 300 },
+        "throttle_pct": { "type": "number", "minimum": -2, "maximum": 107 },
+        "brake_pressure_bar": { "type": "number", "minimum": -3, "maximum": 120 },
+        "steering_deg": { "type": "number", "minimum": -540, "maximum": 540 },
+        "rpm": { "type": "number", "minimum": 0, "maximum": 9500 },
+        "gear": { "type": "integer", "minimum": 0, "maximum": 7 },
+        "longitudinal_g": { "type": "number", "minimum": -20, "maximum": 20 },
+        "lateral_g": { "type": "number", "minimum": -20, "maximum": 20 },
+        "yaw_rate_deg_s": { "type": "number", "minimum": -180, "maximum": 180 },
+        "wheel_speed_fl_kph": { "type": "number", "minimum": 0, "maximum": 320 },
+        "wheel_speed_fr_kph": { "type": "number", "minimum": 0, "maximum": 320 },
+        "wheel_speed_rl_kph": { "type": "number", "minimum": 0, "maximum": 320 },
+        "wheel_speed_rr_kph": { "type": "number", "minimum": 0, "maximum": 320 },
+        "gps_course_deg": { "type": ["number", "null"], "minimum": 0, "maximum": 360 },
+        "gps_latitude_deg": { "type": ["number", "null"], "minimum": -90, "maximum": 90 },
+        "gps_longitude_deg": { "type": ["number", "null"], "minimum": -180, "maximum": 180 }
       }
     }
   }

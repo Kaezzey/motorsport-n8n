@@ -42,15 +42,25 @@ Pause-gate questions:
 - Are unassigned pre/post-lap rows intentionally excluded from lap analysis?
 - Should optional GPS/TPMS channels join the required schema in Milestone 3?
 
-## Milestone 3 — Sensor-quality checks
+## Milestone 3 — Sensor-quality checks (implemented)
 
-Planned evidence:
+Evidence in this repository:
 
-- duration-aware frozen-signal detection;
-- vehicle/logger-specific ranges;
-- derivatives scaled by elapsed time;
-- spike, dropout, and recovery detection;
-- GPS bounds, jumps, and fix-quality validation.
+- versioned N9115/Workbench logger profile with separately documented observed and physical ranges;
+- duration-aware, activity-gated frozen-signal intervals;
+- derivative rates scaled by elapsed milliseconds rather than sample count;
+- bounded spike/recovery and dropout/recovery evidence;
+- optional canonical GPS plus required Workbench GPS source mapping;
+- GPS coordinate bounds, track envelope, held-position, jump-distance, and implied-speed checks;
+- synthetic corruption tests for each diagnostic family;
+- sanitized evaluation over 123 copied laps and 936,162 assigned samples in `evidence/milestone-3-summary.json`.
+
+Pause-gate questions:
+
+- Is `*yaw (deg/s)` the intended yaw channel, or is the constant value a conversion/mapping defect?
+- Are the raw accelerometer oscillations expected logger behavior, or should the Workbench cleaner filter them before export?
+- Which GPS jump threshold is appropriate for the logger update/interpolation strategy?
+- Should sensor findings remain mandatory `review`, or should any become a hard rejection for model-training use?
 
 ## Milestone 4 — Lap-context analysis
 
@@ -103,4 +113,4 @@ Planned evidence:
 
 ## Prototype status versus milestone status
 
-The prototype contains intentionally basic versions of checks from Milestones 2–5 so the complete control loop can be demonstrated. Those milestones are not marked complete: each still needs real telemetry, domain labels, calibration, and acceptance evidence.
+The prototype contains intentionally basic versions of checks from Milestones 4–5 so the complete control loop can be demonstrated. Those milestones are not marked complete: each still needs real telemetry, domain labels, calibration, and acceptance evidence.

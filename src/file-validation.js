@@ -127,6 +127,8 @@ export async function validateRunCsv(path, options) {
   const channelStates = Object.fromEntries(Object.keys(channelMap).map((channel) => [channel, {
     missing_count: 0,
     invalid_count: 0,
+    minimum: null,
+    maximum: null,
     dropout_interval_count: 0,
     max_dropout_duration_ms: 0,
     dropout_intervals: [],
@@ -198,8 +200,12 @@ export async function validateRunCsv(path, options) {
         state.missing_count += 1;
         if (invalid) state.invalid_count += 1;
         if (!state.open_dropout) state.open_dropout = { start_row: dataRows, start_timestamp: validTimestamp ? timestamp : null };
-      } else if (state.open_dropout) {
-        closeDropout(state, dataRows - 1, lastTimestamp === timestamp ? timestamp - expectedIntervalMs : lastTimestamp, expectedIntervalMs);
+      } else {
+        state.minimum = state.minimum === null ? numeric : Math.min(state.minimum, numeric);
+        state.maximum = state.maximum === null ? numeric : Math.max(state.maximum, numeric);
+        if (state.open_dropout) {
+          closeDropout(state, dataRows - 1, lastTimestamp === timestamp ? timestamp - expectedIntervalMs : lastTimestamp, expectedIntervalMs);
+        }
       }
     }
   }

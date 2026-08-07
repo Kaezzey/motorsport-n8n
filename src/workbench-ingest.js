@@ -24,7 +24,10 @@ export const channelMap = {
   wheel_speed_fl_kph: 'ecu_speed_fl (kph)',
   wheel_speed_fr_kph: 'ecu_speed_fr (kph)',
   wheel_speed_rl_kph: 'ecu_speed_rl (kph)',
-  wheel_speed_rr_kph: 'ecu_speed_rr (kph)'
+  wheel_speed_rr_kph: 'ecu_speed_rr (kph)',
+  gps_course_deg: 'log_gps_course (deg)',
+  gps_latitude_deg: 'log_gps_lat (deg)',
+  gps_longitude_deg: 'log_gps_lon (deg)'
 };
 
 export const lapNumberColumn = 'PDS Lap Number (-)';
@@ -40,7 +43,10 @@ export const canonicalUnits = {
   longitudinal_g: 'g',
   lateral_g: 'g',
   yaw_rate_deg_s: 'deg/s',
-  wheel_speed_kph: 'km/h'
+  wheel_speed_kph: 'km/h',
+  gps_course_deg: 'deg',
+  gps_latitude_deg: 'deg',
+  gps_longitude_deg: 'deg'
 };
 
 function isWithin(root, candidate) {

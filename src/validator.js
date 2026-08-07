@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { analyzeSensorQuality } from './sensor-quality.js';
 
 const mean = (values) => values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
 
@@ -116,7 +117,8 @@ export function validateTelemetry(payload, policy, options = {}) {
   record('timestamps.jitter', 'warning', jitterPassed, jitterPassed ? 'Timestamp jitter is within policy' : `Timestamp jitter ratio ${intervalJitter.toFixed(3)} exceeds ${thresholds.timestamp_jitter_ratio}`, { jitter_ratio: intervalJitter });
 
   const rangeViolations = [];
-  for (const [channel, [minimum, maximum]] of Object.entries(policy.ranges)) {
+  const physicalRanges = policy.sensor_quality_profile?.physical_ranges ?? policy.ranges;
+  for (const [channel, [minimum, maximum]] of Object.entries(physicalRanges)) {
     samples.forEach((sample, index) => {
       const value = sample?.[channel];
       if (Number.isFinite(value) && (value < minimum || value > maximum)) rangeViolations.push({ sample_index: index, channel, value, allowed: [minimum, maximum] });
@@ -124,23 +126,44 @@ export function validateTelemetry(payload, policy, options = {}) {
   }
   record('ranges.physical', 'error', rangeViolations.length === 0, rangeViolations.length ? `${rangeViolations.length} physical range violation(s)` : 'All numeric channels are within physical bounds', { violations: rangeViolations.slice(0, 20), total_violations: rangeViolations.length });
 
-  const frozenCandidates = ['speed_kph', 'rpm', 'wheel_speed_fl_kph', 'wheel_speed_fr_kph', 'wheel_speed_rl_kph', 'wheel_speed_rr_kph'];
-  const frozenChannels = frozenCandidates.filter((channel) => {
-    const values = finiteValues(samples, channel);
-    return values.length >= thresholds.minimum_samples && Math.abs(mean(values)) > 1 && variance(values) <= thresholds.frozen_variance_epsilon;
-  });
-  record('signals.frozen', 'warning', frozenChannels.length === 0, frozenChannels.length ? `Possible frozen signal(s): ${frozenChannels.join(', ')}` : 'No continuously active channel appears frozen', { frozen_channels: frozenChannels });
-
-  const consecutiveSteps = (channel) => samples.slice(1).flatMap((sample, index) => {
-    const previous = samples[index]?.[channel];
-    const current = sample?.[channel];
-    return Number.isFinite(previous) && Number.isFinite(current) ? [Math.abs(current - previous)] : [];
-  });
-  const speedSteps = consecutiveSteps('speed_kph');
-  const rpmSteps = consecutiveSteps('rpm');
-  const speedSpikes = speedSteps.filter((step) => step > thresholds.maximum_speed_step_kph).length;
-  const rpmSpikes = rpmSteps.filter((step) => step > thresholds.maximum_rpm_step).length;
-  record('signals.derivative', 'warning', speedSpikes === 0 && rpmSpikes === 0, speedSpikes || rpmSpikes ? `Abrupt steps detected: speed=${speedSpikes}, rpm=${rpmSpikes}` : 'Speed and RPM steps are plausible', { speed_spikes: speedSpikes, rpm_spikes: rpmSpikes });
+  const sensorQuality = analyzeSensorQuality(samples, policy.sensor_quality_profile, payload?.provenance);
+  record(
+    'signals.frozen_duration',
+    'warning',
+    sensorQuality.frozen.passed,
+    sensorQuality.frozen.passed ? 'No active signal is frozen beyond its duration threshold' : `${sensorQuality.frozen.interval_count} duration-aware frozen interval(s) detected`,
+    sensorQuality.frozen
+  );
+  record(
+    'signals.derivative_rate',
+    'warning',
+    sensorQuality.derivatives.passed,
+    sensorQuality.derivatives.passed ? 'Elapsed-time derivative rates are within profile limits' : `${sensorQuality.derivatives.violation_count} derivative-rate violation(s) detected`,
+    sensorQuality.derivatives
+  );
+  record(
+    'signals.spikes',
+    'warning',
+    sensorQuality.spikes.passed,
+    sensorQuality.spikes.passed ? 'No isolated spike-and-recovery events detected' : `${sensorQuality.spikes.spike_count} isolated spike-and-recovery event(s) detected`,
+    sensorQuality.spikes
+  );
+  record(
+    'signals.dropouts',
+    'warning',
+    sensorQuality.dropouts.passed,
+    sensorQuality.dropouts.passed ? 'No lap-level channel dropout exceeds the duration threshold' : `${sensorQuality.dropouts.review_interval_count} dropout interval(s) require review`,
+    sensorQuality.dropouts
+  );
+  record(
+    'gps.validity',
+    'warning',
+    sensorQuality.gps.passed,
+    sensorQuality.gps.status === 'not_available'
+      ? sensorQuality.gps.reason
+      : sensorQuality.gps.passed ? 'GPS fixes, movement, and jumps are plausible' : 'GPS fix quality, held positions, or jumps require review',
+    sensorQuality.gps.metrics
+  );
 
   const wheelDeltas = samples.flatMap((sample) => ['wheel_speed_fl_kph', 'wheel_speed_fr_kph', 'wheel_speed_rl_kph', 'wheel_speed_rr_kph']
     .map((channel) => Number.isFinite(sample?.[channel]) && Number.isFinite(sample?.speed_kph) ? Math.abs(sample[channel] - sample.speed_kph) : null)
@@ -169,7 +192,8 @@ export function validateTelemetry(payload, policy, options = {}) {
   const decision = hardFailures.length ? 'reject' : explicitReviewTriggers.length || failedWarnings.length >= thresholds.warnings_before_review ? 'review' : 'accept';
 
   const selectedDiagnostics = ['schema_validation', 'timing_validation', 'missing_data_scan', 'physical_range_scan'];
-  if (!checks.find((check) => check.id === 'signals.frozen')?.passed || !checks.find((check) => check.id === 'signals.derivative')?.passed) selectedDiagnostics.push('sensor_integrity_investigation');
+  if (['signals.frozen_duration', 'signals.derivative_rate', 'signals.spikes', 'signals.dropouts', 'gps.validity'].some((id) => !checks.find((check) => check.id === id)?.passed)) selectedDiagnostics.push('sensor_integrity_investigation');
+  if (!sensorQuality.gps.passed) selectedDiagnostics.push('gps_fix_investigation');
   if (!wheelSpeedPassed) selectedDiagnostics.push('wheel_speed_comparison');
   if (brakingSamples.length) selectedDiagnostics.push('brake_deceleration_alignment');
   if (steeringEvents.length) selectedDiagnostics.push('steering_yaw_alignment');
@@ -196,6 +220,7 @@ export function validateTelemetry(payload, policy, options = {}) {
       downstream_processing_authorized: decision === 'accept'
     },
     lap_classification: classification,
+    sensor_quality: sensorQuality,
     decision,
     reason_codes: [...hardFailures, ...failedWarnings].map((check) => check.id),
     summary: decision === 'accept'

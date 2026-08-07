@@ -1,0 +1,59 @@
+{
+  "evidence_version": "1.0",
+  "milestone": 3,
+  "generated_at": "2026-08-07T01:20:32.597Z",
+  "policy_id": "milestone-3-sensor-quality-gate-v1",
+  "policy_sha256": "2025bfe921b1bb18b25b42ef96eb5e315f6d01edc127ba1954253ccb6087809f",
+  "sensor_profile_id": "n9115-workbench-logger-v1",
+  "sensor_profile_sha256": "57b98959d451441ae1a0ebdd6e81dc3c95f54604a9fe6555399d62026513890a",
+  "source": {
+    "description": "Ignored local copy of one Motorsport Workbench manifest collection",
+    "original_source_modified": false,
+    "event_folder_count": 1,
+    "file_count": 15,
+    "file_row_count": 980765,
+    "lap_assigned_sample_count": 936162,
+    "lap_count": 123,
+    "expected_sample_rate_hz": 100
+  },
+  "decisions": {
+    "accept": 0,
+    "review": 123,
+    "reject": 0,
+    "downstream_authorized": 0
+  },
+  "sensor_quality": {
+    "frozen_interval_count": 131,
+    "frozen_counts_by_channel": {
+      "yaw_rate_deg_s": 131
+    },
+    "derivative_violation_count": 0,
+    "spike_count": 18069,
+    "spike_counts_by_channel": {
+      "lateral_g": 12346,
+      "longitudinal_g": 5723
+    },
+    "dropout_review_interval_count": 0,
+    "gps_valid_lap_count": 3,
+    "gps_suspect_lap_count": 120,
+    "gps_jump_count": 1128
+  },
+  "reason_code_lap_counts": {
+    "signals.frozen_duration": 123,
+    "signals.spikes": 123,
+    "gps.validity": 120,
+    "consistency.steering_yaw": 108
+  },
+  "lap_classification_counts": {
+    "push_lap": 107,
+    "in_lap": 15,
+    "out_lap": 1
+  },
+  "interpretation": [
+    "The mapped yaw channel is constant at -27.306659169604096 deg/s across all 15 files and triggers duration-aware review on every lap.",
+    "Accelerometer spike/recovery and GPS-jump findings are diagnostic candidates, not engineer-labelled ground truth.",
+    "No reviewed lap was authorized for downstream processing; a human must approve or reject the findings.",
+    "Elapsed-time derivative limits were calibrated above the copied logger's observed normal update behavior and produced no derivative violations."
+  ],
+  "reproduce": "npm run evaluate -- data/incoming-manifests --output .local/milestone-3-evaluation.json"
+}

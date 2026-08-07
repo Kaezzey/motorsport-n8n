@@ -1,6 +1,6 @@
 {
   "name": "motorsport-telemetry-agent",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Auditable n8n prototype for bounded motorsport telemetry quality decisions.",
   "type": "module",
@@ -11,6 +11,7 @@
     "agent": "node src/server.js",
     "ingest": "node src/ingest-cli.js",
     "preflight": "node src/preflight-cli.js",
+    "evaluate": "node src/evaluate-cli.js",
     "validate": "node src/cli.js",
     "test": "node --test",
     "test:smoke": "node scripts/smoke-check.js",

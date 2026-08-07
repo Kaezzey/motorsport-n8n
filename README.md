@@ -2,13 +2,13 @@
 
 An auditable, bounded n8n agent that turns a completed motorsport session into a structured telemetry-quality decision. It removes the repetitive validation gap without giving automation authority beyond an explicit policy.
 
-This repository contains the completed Milestones 1 and 2 plus a thin end-to-end prototype for **Motorsport Workbench Part 4**. It is evidence of the architecture and responsible-automation approach, not a claim that the later sensor and context milestones are production-ready.
+This repository contains the completed Milestones 1–3 plus a thin end-to-end prototype for **Motorsport Workbench Part 4**. It is evidence of the architecture and responsible-automation approach, not a claim that the later context milestones are production-ready.
 
 ## What works now
 
 - Accepts a canonical lap as JSON through an n8n webhook.
 - Preflights complete Workbench run files before any lap enters n8n.
-- Runs deterministic schema, timing, missing-data, unit, physical-range, frozen-signal, derivative, and basic cross-channel checks.
+- Applies a versioned N9115/Workbench logger profile with physical bounds, duration-aware frozen detection, elapsed-time derivatives, spike/recovery, dropout/recovery, and GPS validation.
 - Estimates `out_lap`, `in_lap`, `push_lap`, or `installation_lap` context.
 - Produces one structured `accept`, `review`, or `reject` decision.
 - Allows only `accept` to reach the downstream-processing placeholder.
@@ -24,7 +24,7 @@ flowchart LR
     A -->|accept or review| B["Lap segmentation"]
     B --> C["n8n webhook"]
     C --> D["Bounded diagnostic controller"]
-    D --> E["Deterministic policy checks"]
+    D --> E["Deterministic policy + sensor profile"]
     E --> F{"Decision"}
     F -->|accept| G["Downstream placeholder"]
     F -->|review| H["Human review queue"]
@@ -60,7 +60,7 @@ npm run n8n:publish
 npm run n8n:start
 ```
 
-Open [http://localhost:5678](http://localhost:5678), open **Telemetry Quality Agent - Milestone 2**, and activate it. Submit the clean example:
+Open [http://localhost:5678](http://localhost:5678), open **Telemetry Quality Agent - Milestone 3**, and activate it. Submit the clean example:
 
 ```bash
 curl --fail-with-body \
@@ -90,6 +90,14 @@ Then prepare two laps without submitting:
 ```bash
 npm run ingest -- data/incoming-manifests --dry-run --limit 2
 ```
+
+Evaluate every copied lap locally through the Milestone 3 policy without starting n8n or writing audit events:
+
+```bash
+npm run evaluate -- data/incoming-manifests --output .local/milestone-3-evaluation.json
+```
+
+The current copied event produces 123 `review` decisions and zero downstream authorizations. The strongest finding is a yaw channel frozen at one value across all 15 files; GPS jumps and accelerometer spike/recovery patterns also need engineering review. This is a conservative quality-gate result, not a claim that those signals are definitively unusable.
 
 Then, while the telemetry service and n8n are running, submit one real lap:
 
@@ -145,11 +153,13 @@ The unit suite verifies decisions, hard gates, review routing, stable input fing
 | ---------------------------------------- | ---------------------------------------------------------------------------------- |
 | `workflows/telemetry-quality-agent.json` | Importable n8n orchestration workflow                                              |
 | `config/policy.json`                     | Human-owned schema, ranges, thresholds, and hard gates                             |
+| `config/vehicle-profile.json`            | Versioned vehicle/logger sensor-quality assumptions and thresholds                  |
 | `schemas/telemetry-lap.schema.json`      | Portable JSON Schema for the canonical lap contract                                |
 | `src/validator.js`                       | Deterministic diagnostics and decision controller                                  |
 | `src/server.js`                          | Local validation, override, and audit API                                          |
 | `src/workbench-ingest.js`                | Workbench manifest discovery, hash verification, CSV mapping, and lap segmentation |
 | `src/file-validation.js`                 | Full-run schema, timestamp, sample-rate, missingness, and dropout preflight          |
+| `src/sensor-quality.js`                  | Frozen, derivative, spike/recovery, dropout/recovery, and GPS diagnostics            |
 | `src/audit-log.js`                       | Append-only SHA-256 event chain                                                    |
 | `samples/`                               | Clean and corrupted example laps                                                   |
 | `test/`                                  | Decision, audit, and workflow tests                                                |
@@ -158,7 +168,7 @@ The unit suite verifies decisions, hard gates, review routing, stable input fing
 
 ## Deliberate limitations
 
-- The fixtures are synthetic and short; thresholds are placeholders awaiting logger- and vehicle-specific evidence.
+- Sensor thresholds are calibrated against one copied event, but still require engineer-labelled clean/corrupted laps before production use.
 - Lap classification is heuristic, not a trained classifier.
 - The JSONL audit chain makes edits detectable but is not a multi-user transactional datastore.
 - No LLM is in the decision path. A later language-model layer may summarize evidence or choose from allow-listed diagnostics, but deterministic policy retains decision authority.

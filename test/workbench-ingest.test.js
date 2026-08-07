@@ -10,7 +10,8 @@ const headers = [
   'Time (ms)', '*yaw (deg/s)', 'ecu_aps (%)', 'ecu_nmot (rpm)', 'ecu_speed (kph)',
   'ecu_speed_fl (kph)', 'ecu_speed_fr (kph)', 'ecu_speed_rl (kph)', 'ecu_speed_rr (kph)',
   'log_acc_x (g)', 'log_acc_y (g)', 'log_asteer (deg)', 'log_dash_gear (-)',
-  'log_pbrake_f (bar)', 'PDS Lap Number (-)'
+  'log_pbrake_f (bar)', 'log_gps_course (deg)', 'log_gps_lat (deg)', 'log_gps_lon (deg)',
+  'PDS Lap Number (-)'
 ];
 
 function fixtureCsv() {
@@ -20,7 +21,7 @@ function fixtureCsv() {
       const speed = 80 + sample;
       rows.push([
         ((lap - 1) * 100 + sample * 10), 1, 50, 5000 + sample * 10, speed,
-        speed, speed, speed, speed, 0.1, 0.2, 2, 3, 0, lap
+        speed, speed, speed, speed, 0.1, 0.2, 2, 3, 0, 90, -27.69 + sample * 0.000001, 152.65, lap
       ].join(','));
     }
   }
@@ -75,6 +76,7 @@ test('Workbench collection adapter verifies, segments, maps, and hydrates laps',
   assert.equal(submitted[0].samples.length, 10);
   assert.equal(submitted[0].samples[0].timestamp_ms, 0);
   assert.equal(submitted[0].samples[0].brake_pressure_bar, 0);
+  assert.equal(submitted[0].samples[0].gps_course_deg, 90);
   assert.equal(submitted[0].schema_version, '1.0');
   assert.equal(submitted[0].expected_sample_rate_hz, 100);
   assert.equal(submitted[0].purpose, 'model_training');

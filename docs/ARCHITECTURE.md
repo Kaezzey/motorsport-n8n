@@ -9,8 +9,8 @@ The system separates orchestration from decision evidence:
 3. Rejected files stop before lap segmentation; review-level files mark every derived lap for review.
 4. Accepted or review-level files are segmented into canonical schema v1.0 laps.
 5. n8n receives each lap and records the workflow execution.
-6. The telemetry service loads a versioned, human-owned policy.
-7. The controller runs baseline checks and selects allow-listed follow-up diagnostics when evidence warrants them.
+6. The telemetry service loads a versioned, human-owned policy and its vehicle/logger sensor profile.
+7. The controller runs baseline checks plus duration-aware sensor and GPS diagnostics, then selects allow-listed follow-up investigations when evidence warrants them.
 8. Deterministic gates produce `accept`, `review`, or `reject`.
 9. n8n permits only `accept` to reach the downstream placeholder.
 10. The service appends the decision to a hash-linked audit log.
@@ -34,7 +34,9 @@ stateDiagram-v2
     Quarantined --> [*]
 ```
 
-File hard failures include missing or duplicate columns, malformed row widths, timestamp duplicates or resets, missing timestamps, and excessive channel missingness. File-level timestamp gaps, sample-rate deviation, and long sparse dropouts request review. Lap hard failures include unsupported schema or purpose, rejected file provenance, too few samples, excessive missing channel data, unit mismatch, non-monotonic timestamps, and physical-range violations. Thresholds are explicit in `config/policy.json`.
+File hard failures include missing or duplicate columns, malformed row widths, timestamp duplicates or resets, missing timestamps, and excessive channel missingness. File-level timestamp gaps, sample-rate deviation, and long sparse dropouts request review. Lap hard failures include unsupported schema or purpose, rejected file provenance, too few samples, excessive missing channel data, unit mismatch, non-monotonic timestamps, and physical-range violations. Frozen intervals, excessive derivative rates, isolated spike/recovery events, long lap-level dropouts, and suspect GPS request review. Decision rules are explicit in `config/policy.json`; vehicle/logger assumptions live separately in `config/vehicle-profile.json`.
+
+The sensor profile does not derive physical safety bounds automatically from observed extrema. It records the copied event's ranges as calibration evidence while keeping the actionable bounds and diagnostic thresholds explicit and reviewable by a human.
 
 ## Audit model
 
@@ -60,7 +62,8 @@ Telemetry validity is primarily numerical and policy-driven. An LLM would add va
 - Fixed ranges can reject legitimate vehicle-specific behavior or miss plausible-looking corruption.
 - Steering/yaw sign conventions must be normalized before cross-channel checks are portable.
 - Mean wheel-speed difference does not yet distinguish lock-up, wheelspin, tyre-radius differences, or cornering geometry.
-- Short windows can make frozen-signal detection overconfident.
+- Frozen detection is duration- and activity-gated, but a threshold can still confuse valid steady state with a stuck sensor.
+- Current real-data findings have not yet been labelled by a motorsport engineer; they are diagnostic candidates, not ground truth.
 - A hash chain is tamper-evident only if its trusted head is retained separately.
 - Content-addressed preflight reports are local files, not immutable external retention.
 

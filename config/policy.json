@@ -1,5 +1,6 @@
 {
-  "policy_id": "milestone-2-file-channel-gate-v1",
+  "policy_id": "milestone-3-sensor-quality-gate-v1",
+  "sensor_quality_profile_path": "./vehicle-profile.json",
   "required_top_level": [
     "schema_version",
     "session_id",
@@ -39,29 +40,26 @@
     "wheel_speed_kph": "km/h"
   },
   "ranges": {
-    "speed_kph": [0, 400],
-    "throttle_pct": [-2, 105],
-    "brake_pressure_bar": [-5, 200],
-    "steering_deg": [-900, 900],
-    "rpm": [0, 25000],
-    "gear": [-1, 10],
-    "longitudinal_g": [-6, 4],
-    "lateral_g": [-7, 7],
-    "yaw_rate_deg_s": [-360, 360],
-    "wheel_speed_fl_kph": [0, 450],
-    "wheel_speed_fr_kph": [0, 450],
-    "wheel_speed_rl_kph": [0, 450],
-    "wheel_speed_rr_kph": [0, 450]
+    "speed_kph": [0, 300],
+    "throttle_pct": [-2, 107],
+    "brake_pressure_bar": [-3, 120],
+    "steering_deg": [-540, 540],
+    "rpm": [0, 9500],
+    "gear": [0, 7],
+    "longitudinal_g": [-20, 20],
+    "lateral_g": [-20, 20],
+    "yaw_rate_deg_s": [-180, 180],
+    "wheel_speed_fl_kph": [0, 320],
+    "wheel_speed_fr_kph": [0, 320],
+    "wheel_speed_rl_kph": [0, 320],
+    "wheel_speed_rr_kph": [0, 320]
   },
   "thresholds": {
     "minimum_samples": 10,
     "sample_rate_tolerance_ratio": 0.15,
     "timestamp_jitter_ratio": 0.25,
     "maximum_missing_ratio": 0.01,
-    "frozen_variance_epsilon": 0.000001,
     "maximum_wheel_speed_delta_kph": 15,
-    "maximum_speed_step_kph": 45,
-    "maximum_rpm_step": 6000,
     "minimum_brake_pressure_bar": 15,
     "minimum_braking_deceleration_g": -0.08,
     "warnings_before_review": 2
@@ -80,7 +78,12 @@
   "review_trigger_checks": [
     "manifest.review_required",
     "manifest.match_confidence",
-    "file.validation_review"
+    "file.validation_review",
+    "signals.frozen_duration",
+    "signals.derivative_rate",
+    "signals.spikes",
+    "signals.dropouts",
+    "gps.validity"
   ],
   "file_validation": {
     "timestamp_gap_multiplier": 5,

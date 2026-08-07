@@ -31,8 +31,11 @@ Absolute paths embedded in the manifest are not followed. The adapter uses only 
 | `lateral_g` | `log_acc_y (g)` |
 | `yaw_rate_deg_s` | `*yaw (deg/s)` |
 | four wheel speeds | four `ecu_speed_* (kph)` columns |
+| `gps_course_deg` | `log_gps_course (deg)` |
+| `gps_latitude_deg` | `log_gps_lat (deg)` |
+| `gps_longitude_deg` | `log_gps_lon (deg)` |
 
-No brake-pressure-to-percent conversion is performed. The canonical contract now preserves the measured front brake pressure in bar.
+No brake-pressure-to-percent conversion is performed. The canonical contract preserves measured front brake pressure in bar. GPS is required by this Workbench adapter because these exports contain it, while it remains optional for generic canonical JSON input.
 
 ## Safe first run
 
@@ -50,6 +53,12 @@ Inspect and prepare two laps without contacting n8n:
 
 ```bash
 npm run ingest -- data/incoming-manifests --dry-run --limit 2
+```
+
+Run the complete local sensor-quality evaluation without contacting n8n or appending audit events:
+
+```bash
+npm run evaluate -- data/incoming-manifests --output .local/milestone-3-evaluation.json
 ```
 
 With the telemetry service and n8n running, submit one real lap:

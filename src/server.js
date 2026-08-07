@@ -81,7 +81,12 @@ const server = createServer(async (request, response) => {
     if (request.method === 'OPTIONS') return send(response, 204, {});
     const url = new URL(request.url, `http://${request.headers.host ?? 'localhost'}`);
     if (request.method === 'GET' && url.pathname === '/health') {
-      return send(response, 200, { status: 'ok', policy_id: policy.policy_id, audit_log: auditPath });
+      return send(response, 200, {
+        status: 'ok',
+        policy_id: policy.policy_id,
+        sensor_profile_id: policy.sensor_quality_profile?.profile_id ?? null,
+        audit_log: auditPath
+      });
     }
     if (request.method === 'POST' && url.pathname === '/validate') return await handleValidation(request, response);
     if (request.method === 'POST' && url.pathname === '/override') return await handleOverride(request, response);
