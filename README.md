@@ -2,8 +2,6 @@
 
 An auditable, bounded n8n agent that turns a completed motorsport session into a structured telemetry-quality decision. It removes the repetitive validation gap without giving automation authority beyond an explicit policy.
 
-This repository contains the completed Milestones 1–3 plus a thin end-to-end prototype for **Motorsport Workbench Part 4**. It is evidence of the architecture and responsible-automation approach, not a claim that the later context milestones are production-ready.
-
 ## What works now
 
 - Accepts a canonical lap as JSON through an n8n webhook.
