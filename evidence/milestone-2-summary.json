@@ -1,0 +1,39 @@
+{
+  "evidence_version": "1.0",
+  "milestone": 2,
+  "generated_at": "2026-08-07T00:39:22.426Z",
+  "source": {
+    "description": "Local copied Motorsport Workbench manifest collection",
+    "manifest_kind": "motorsport-ml/run-manifest",
+    "manifest_version": "1.1",
+    "event_folder_count": 1,
+    "run_file_count": 15
+  },
+  "decisions": {
+    "accept": 15,
+    "review": 0,
+    "reject": 0,
+    "skipped": 0
+  },
+  "rows": {
+    "total": 980765,
+    "lap_assigned": 936162,
+    "unassigned": 44603,
+    "malformed": 0
+  },
+  "timestamps": {
+    "observed_sample_rate_hz": [100],
+    "duplicates": 0,
+    "resets": 0,
+    "gaps": 0
+  },
+  "channels": {
+    "files_with_required_channel_missingness": 0,
+    "files_with_over_threshold_dropouts": 0
+  },
+  "notes": [
+    "Unassigned rows are valid run data outside a numbered PDS lap and are not submitted as laps.",
+    "The large copied telemetry directory is excluded from Git; this sanitized summary is repository evidence.",
+    "Every detailed file report has an individual SHA-256 embedded in lap provenance during ingestion."
+  ]
+}

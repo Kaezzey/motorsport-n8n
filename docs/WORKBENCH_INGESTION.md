@@ -36,6 +36,16 @@ No brake-pressure-to-percent conversion is performed. The canonical contract now
 
 ## Safe first run
 
+Run full-file validation without submitting laps:
+
+```bash
+npm run preflight -- data/incoming-manifests --output .local/preflight-report.json
+```
+
+This scans every included run, verifies its hash and schema, and records timestamp segments plus per-channel dropout intervals. A rejected file is never split into laps. A review-level file can be split, but every resulting lap is forced to human review.
+
+Detailed reports are also stored by content hash under `.local/file-validation/`. Each lap carries that report hash and a compact preflight summary, so the evidence can be retrieved without duplicating a large report into every audit event.
+
 Inspect and prepare two laps without contacting n8n:
 
 ```bash

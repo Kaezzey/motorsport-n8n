@@ -1,6 +1,7 @@
 {
-  "policy_id": "week-1-quality-gate-v1",
+  "policy_id": "milestone-2-file-channel-gate-v1",
   "required_top_level": [
+    "schema_version",
     "session_id",
     "lap_id",
     "purpose",
@@ -67,7 +68,9 @@
   },
   "hard_failure_checks": [
     "schema.required",
+    "schema.version",
     "schema.purpose",
+    "file.validation_reject",
     "samples.minimum",
     "timestamps.monotonic",
     "channels.missing",
@@ -76,8 +79,20 @@
   ],
   "review_trigger_checks": [
     "manifest.review_required",
-    "manifest.match_confidence"
+    "manifest.match_confidence",
+    "file.validation_review"
   ],
+  "file_validation": {
+    "timestamp_gap_multiplier": 5,
+    "maximum_malformed_row_ratio": 0,
+    "maximum_duplicate_timestamps": 0,
+    "maximum_timestamp_resets": 0,
+    "maximum_timestamp_missing_ratio": 0,
+    "sample_rate_tolerance_ratio": 0.05,
+    "maximum_gap_count_before_review": 0,
+    "maximum_channel_missing_ratio": 0.01,
+    "maximum_dropout_duration_ms_before_review": 50
+  },
   "allowed_purposes": [
     "driver_coaching",
     "vehicle_performance",

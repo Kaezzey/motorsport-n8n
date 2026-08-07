@@ -62,3 +62,20 @@ test('an upstream manifest review flag always routes to human review', async () 
   assert.equal(result.autonomy.downstream_processing_authorized, false);
   assert.ok(result.reason_codes.includes('manifest.review_required'));
 });
+
+test('unsupported canonical schema versions are rejected', async () => {
+  const telemetry = await loadJson('../samples/clean-push-lap.json');
+  telemetry.schema_version = '2.0';
+  const result = validateTelemetry(telemetry, policy);
+  assert.equal(result.decision, 'reject');
+  assert.ok(result.reason_codes.includes('schema.version'));
+});
+
+test('a file-level review decision cannot authorize downstream processing', async () => {
+  const telemetry = await loadJson('../samples/clean-push-lap.json');
+  telemetry.provenance = { file_validation: { decision: 'review', report_sha256: 'fixture' } };
+  const result = validateTelemetry(telemetry, policy);
+  assert.equal(result.decision, 'review');
+  assert.equal(result.autonomy.downstream_processing_authorized, false);
+  assert.ok(result.reason_codes.includes('file.validation_review'));
+});

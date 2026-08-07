@@ -3,8 +3,9 @@
   "$id": "https://example.local/schemas/telemetry-lap.schema.json",
   "title": "Canonical motorsport telemetry lap",
   "type": "object",
-  "required": ["session_id", "lap_id", "purpose", "expected_sample_rate_hz", "units", "samples"],
+  "required": ["schema_version", "session_id", "lap_id", "purpose", "expected_sample_rate_hz", "units", "samples"],
   "properties": {
+    "schema_version": { "const": "1.0" },
     "session_id": { "type": "string", "minLength": 1 },
     "lap_id": { "type": "string", "minLength": 1 },
     "purpose": {

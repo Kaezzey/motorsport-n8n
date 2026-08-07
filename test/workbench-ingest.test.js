@@ -58,9 +58,11 @@ test('CSV parser handles quoted commas and escaped quotes', () => {
 test('Workbench collection adapter verifies, segments, maps, and hydrates laps', async (context) => {
   const root = await createCollection(context);
   const submitted = [];
+  const fileReports = [];
   const report = await ingestWorkbenchCollection(root, {
     limit: 2,
     purpose: 'model_training',
+    onFileReport: async (fileReport) => fileReports.push(fileReport),
     submitLap: async (payload) => {
       submitted.push(payload);
       return { decision: 'accept', run_id: `validation-${submitted.length}` };
@@ -68,12 +70,17 @@ test('Workbench collection adapter verifies, segments, maps, and hydrates laps',
   });
 
   assert.equal(report.counts.accept, 2);
+  assert.equal(fileReports.length, 1);
+  assert.equal(fileReports[0].schema.migration.to, 'motorsport-telemetry-lap/1.0');
   assert.equal(submitted[0].samples.length, 10);
   assert.equal(submitted[0].samples[0].timestamp_ms, 0);
   assert.equal(submitted[0].samples[0].brake_pressure_bar, 0);
+  assert.equal(submitted[0].schema_version, '1.0');
   assert.equal(submitted[0].expected_sample_rate_hz, 100);
   assert.equal(submitted[0].purpose, 'model_training');
   assert.equal(submitted[0].provenance.source_file, 'run-1.csv');
+  assert.equal(submitted[0].provenance.file_validation.decision, 'accept');
+  assert.match(submitted[0].provenance.file_validation.report_sha256, /^[a-f0-9]{64}$/);
   assert.equal(submitted[1].lap_id, 'EVENT::SE1::RUN 1::LAP 2');
 });
 

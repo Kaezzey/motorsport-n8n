@@ -3,11 +3,14 @@ import { createReadStream } from 'node:fs';
 import { readdir, readFile, realpath } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
 import { basename, isAbsolute, relative, resolve, sep } from 'node:path';
+import { parseCsvLine, validateRunCsv } from './file-validation.js';
+
+export { parseCsvLine } from './file-validation.js';
 
 const workbenchKind = 'motorsport-ml/run-manifest';
 const workbenchVersion = '1.1';
 
-const channelMap = {
+export const channelMap = {
   timestamp_ms: 'Time (ms)',
   speed_kph: 'ecu_speed (kph)',
   throttle_pct: 'ecu_aps (%)',
@@ -24,9 +27,9 @@ const channelMap = {
   wheel_speed_rr_kph: 'ecu_speed_rr (kph)'
 };
 
-const lapNumberColumn = 'PDS Lap Number (-)';
+export const lapNumberColumn = 'PDS Lap Number (-)';
 
-const canonicalUnits = {
+export const canonicalUnits = {
   timestamp_ms: 'ms',
   speed_kph: 'km/h',
   throttle_pct: '%',
@@ -43,31 +46,6 @@ const canonicalUnits = {
 function isWithin(root, candidate) {
   const pathFromRoot = relative(root, candidate);
   return pathFromRoot === '' || (!pathFromRoot.startsWith(`..${sep}`) && pathFromRoot !== '..' && !isAbsolute(pathFromRoot));
-}
-
-export function parseCsvLine(line) {
-  const fields = [];
-  let field = '';
-  let quoted = false;
-  for (let index = 0; index < line.length; index += 1) {
-    const character = line[index];
-    if (character === '"') {
-      if (quoted && line[index + 1] === '"') {
-        field += '"';
-        index += 1;
-      } else {
-        quoted = !quoted;
-      }
-    } else if (character === ',' && !quoted) {
-      fields.push(field);
-      field = '';
-    } else {
-      field += character;
-    }
-  }
-  if (quoted) throw new Error('Unterminated quoted CSV field');
-  fields.push(field.replace(/\r$/, ''));
-  return fields;
 }
 
 async function hashFile(path) {
@@ -167,8 +145,23 @@ async function resolveRunCsv(eventFolder, run) {
   return { path: resolvedPath, sha256: actualHash };
 }
 
-function createPayload(manifest, run, lap, purpose, source) {
+function compactFileValidation(report) {
   return {
+    decision: report.decision,
+    report_version: report.report_version,
+    report_sha256: report.report_sha256,
+    reason_codes: report.reason_codes,
+    rows: report.rows,
+    timestamps: report.timestamps,
+    channels_with_missing_data: Object.entries(report.channels)
+      .filter(([, channel]) => channel.missing_count > 0)
+      .map(([channel, details]) => ({ channel, missing_count: details.missing_count, missing_ratio: details.missing_ratio, max_dropout_duration_ms: details.max_dropout_duration_ms }))
+  };
+}
+
+function createPayload(manifest, run, lap, purpose, source, fileValidation) {
+  return {
+    schema_version: '1.0',
     session_id: `${run.event}::${run.session}`,
     lap_id: `${run.run_id}::LAP ${lap.lapNumber}`,
     purpose,
@@ -190,7 +183,8 @@ function createPayload(manifest, run, lap, purpose, source) {
       manifest_match_confidence: run.match_confidence,
       setup_hash: run.setup_hash,
       source_file: basename(source.path),
-      source_sha256: source.sha256
+      source_sha256: source.sha256,
+      file_validation: compactFileValidation(fileValidation)
     }
   };
 }
@@ -202,6 +196,7 @@ export async function ingestWorkbenchCollection(collectionPath, options) {
   let submittedLaps = 0;
   const limit = options.limit ?? Number.POSITIVE_INFINITY;
   const purpose = options.purpose ?? 'driver_coaching';
+  const fileReports = [];
 
   outer: for (const event of events) {
     validateWorkbenchManifest(event.manifest, event.folder);
@@ -212,9 +207,23 @@ export async function ingestWorkbenchCollection(collectionPath, options) {
       }
       try {
         const source = await resolveRunCsv(event.folder, run);
+        const fileValidation = await validateRunCsv(source.path, {
+          channelMap,
+          lapNumberColumn,
+          canonicalUnits,
+          expectedSampleRateHz: 100,
+          policy: options.fileValidationPolicy,
+          sourceSha256: source.sha256
+        });
+        if (options.onFileReport) await options.onFileReport(fileValidation);
+        fileReports.push({ event_folder: basename(event.folder), run_id: run.run_id, file: fileValidation.file.name, decision: fileValidation.decision, report_sha256: fileValidation.report_sha256, reason_codes: fileValidation.reason_codes });
+        if (fileValidation.decision === 'reject') {
+          results.push({ event_folder: basename(event.folder), run_id: run.run_id, status: 'file_reject', reason_codes: fileValidation.reason_codes, file_validation_report_sha256: fileValidation.report_sha256 });
+          continue;
+        }
         for await (const lap of readLapsFromRunCsv(source.path)) {
           if (submittedLaps >= limit) break outer;
-          const payload = createPayload(event.manifest, run, lap, purpose, source);
+          const payload = createPayload(event.manifest, run, lap, purpose, source, fileValidation);
           const decision = await options.submitLap(payload, payload.provenance);
           results.push({
             event_folder: basename(event.folder),
@@ -237,7 +246,7 @@ export async function ingestWorkbenchCollection(collectionPath, options) {
   const counts = results.reduce((totals, result) => {
     totals[result.status] = (totals[result.status] ?? 0) + 1;
     return totals;
-  }, { accept: 0, review: 0, reject: 0, prepared: 0, skipped: 0, ingestion_error: 0 });
+  }, { accept: 0, review: 0, reject: 0, prepared: 0, skipped: 0, file_reject: 0, ingestion_error: 0 });
 
   return {
     manifest_kind: workbenchKind,
@@ -247,6 +256,48 @@ export async function ingestWorkbenchCollection(collectionPath, options) {
     purpose,
     processed_at: new Date().toISOString(),
     counts,
+    file_reports: fileReports,
     results
+  };
+}
+
+export async function preflightWorkbenchCollection(collectionPath, options = {}) {
+  const events = await findEventFolders(collectionPath);
+  const files = [];
+  for (const event of events) {
+    validateWorkbenchManifest(event.manifest, event.folder);
+    for (const run of event.manifest.runs) {
+      if (run.include !== true) {
+        files.push({ event_folder: basename(event.folder), run_id: run.run_id, decision: 'skipped', reason: run.exclude_reason || 'Manifest include flag is false' });
+        continue;
+      }
+      try {
+        const source = await resolveRunCsv(event.folder, run);
+        const report = await validateRunCsv(source.path, {
+          channelMap,
+          lapNumberColumn,
+          canonicalUnits,
+          expectedSampleRateHz: 100,
+          policy: options.fileValidationPolicy,
+          sourceSha256: source.sha256
+        });
+        if (options.onFileReport) await options.onFileReport(report);
+        files.push({ event_folder: basename(event.folder), run_id: run.run_id, ...report });
+      } catch (error) {
+        files.push({ event_folder: basename(event.folder), run_id: run.run_id, decision: 'reject', reason_codes: ['file.unreadable_or_hash_mismatch'], error: error.message });
+      }
+    }
+  }
+  const counts = files.reduce((totals, file) => {
+    totals[file.decision] = (totals[file.decision] ?? 0) + 1;
+    return totals;
+  }, { accept: 0, review: 0, reject: 0, skipped: 0 });
+  return {
+    preflight_report_version: '1.0',
+    collection_path: resolve(collectionPath),
+    event_folder_count: events.length,
+    generated_at: new Date().toISOString(),
+    counts,
+    files
   };
 }

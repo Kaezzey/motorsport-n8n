@@ -21,15 +21,26 @@ Pause-gate questions:
 - Which purposes need distinct suitability policies?
 - Which failures must always reject, and which should request review?
 
-## Milestone 2 — File and channel validation
+## Milestone 2 — File and channel validation (implemented)
 
-Planned evidence:
+Evidence in this repository:
 
-- parsers for the actual CSV, MAT, MDF, or vendor export format;
-- schema-version migration and unit normalization;
-- timestamp reset and duplicate-segment handling;
-- sampling-rate tests using full-session fixtures;
-- per-channel missingness and dropout intervals.
+- streaming parser for the actual Workbench run CSV format;
+- strict Workbench manifest v1.1 and canonical telemetry schema v1.0 contracts;
+- explicit source-to-canonical channel and unit normalization metadata;
+- full-file SHA-256, header-width, and numeric-channel validation before lap submission;
+- timestamp duplicate, reset, gap, segment, and observed-rate evidence;
+- per-channel missingness, invalid-value counts, and bounded dropout intervals;
+- file-level `accept`, `review`, and `reject` gates propagated into lap provenance;
+- synthetic tests for duplicates, resets, gaps, dropouts, hashes, and unsupported schema versions;
+- sanitized real-data evidence covering 15 files and 980,765 rows in `evidence/milestone-2-summary.json`.
+
+Pause-gate questions:
+
+- Is a 50 ms contiguous dropout the correct threshold for mandatory review at 100 Hz?
+- Should any timestamp gap reject immediately rather than request review?
+- Are unassigned pre/post-lap rows intentionally excluded from lap analysis?
+- Should optional GPS/TPMS channels join the required schema in Milestone 3?
 
 ## Milestone 3 — Sensor-quality checks
 

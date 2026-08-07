@@ -2,11 +2,12 @@
 
 An auditable, bounded n8n agent that turns a completed motorsport session into a structured telemetry-quality decision. It removes the repetitive validation gap without giving automation authority beyond an explicit policy.
 
-This repository is the Week 1 milestone and a thin end-to-end prototype for **Motorsport Workbench Part 4**. It is evidence of the architecture and responsible-automation approach, not a claim that the later sensor and context milestones are production-ready.
+This repository contains the completed Milestones 1 and 2 plus a thin end-to-end prototype for **Motorsport Workbench Part 4**. It is evidence of the architecture and responsible-automation approach, not a claim that the later sensor and context milestones are production-ready.
 
 ## What works now
 
 - Accepts a canonical lap as JSON through an n8n webhook.
+- Preflights complete Workbench run files before any lap enters n8n.
 - Runs deterministic schema, timing, missing-data, unit, physical-range, frozen-signal, derivative, and basic cross-channel checks.
 - Estimates `out_lap`, `in_lap`, `push_lap`, or `installation_lap` context.
 - Produces one structured `accept`, `review`, or `reject` decision.
@@ -19,16 +20,18 @@ This repository is the Week 1 milestone and a thin end-to-end prototype for **Mo
 
 ```mermaid
 flowchart LR
-    A["Lap telemetry JSON"] --> B["n8n webhook"]
-    B --> C["Bounded diagnostic controller"]
-    C --> D["Deterministic policy checks"]
-    D --> E{"Decision"}
-    E -->|accept| F["Downstream placeholder"]
-    E -->|review| G["Human review queue"]
-    E -->|reject| H["Quarantine / response"]
-    C --> I["Tamper-evident audit log"]
-    G --> J["Attributed override"]
-    J --> I
+    Z["Workbench run CSV"] --> A["File and channel preflight"]
+    A -->|accept or review| B["Lap segmentation"]
+    B --> C["n8n webhook"]
+    C --> D["Bounded diagnostic controller"]
+    D --> E["Deterministic policy checks"]
+    E --> F{"Decision"}
+    F -->|accept| G["Downstream placeholder"]
+    F -->|review| H["Human review queue"]
+    F -->|reject| I["Quarantine / response"]
+    D --> J["Tamper-evident audit log"]
+    H --> K["Attributed override"]
+    K --> J
 ```
 
 The controller may select additional diagnostics, but its action vocabulary is fixed to `accept`, `reject`, and `request_human_review`. It cannot change policy, repair data silently, or execute downstream work after `review` or `reject`.
@@ -57,7 +60,7 @@ npm run n8n:publish
 npm run n8n:start
 ```
 
-Open [http://localhost:5678](http://localhost:5678), open **Telemetry Quality Agent - Week 1 Prototype**, and activate it. Submit the clean example:
+Open [http://localhost:5678](http://localhost:5678), open **Telemetry Quality Agent - Milestone 2**, and activate it. Submit the clean example:
 
 ```bash
 curl --fail-with-body \
@@ -76,7 +79,13 @@ curl --header 'Content-Type: application/json' \
 
 ## Ingest the copied Motorsport Workbench manifests
 
-The existing Workbench manifest collection has been copied locally to `data/incoming-manifests/`; that large-data directory is intentionally ignored by Git. Start with a no-submit dry run:
+The existing Workbench manifest collection has been copied locally to `data/incoming-manifests/`; that large-data directory is intentionally ignored by Git. Run the complete file/channel preflight first:
+
+```bash
+npm run preflight -- data/incoming-manifests --output .local/preflight-report.json
+```
+
+Then prepare two laps without submitting:
 
 ```bash
 npm run ingest -- data/incoming-manifests --dry-run --limit 2
@@ -140,10 +149,12 @@ The unit suite verifies decisions, hard gates, review routing, stable input fing
 | `src/validator.js`                       | Deterministic diagnostics and decision controller                                  |
 | `src/server.js`                          | Local validation, override, and audit API                                          |
 | `src/workbench-ingest.js`                | Workbench manifest discovery, hash verification, CSV mapping, and lap segmentation |
+| `src/file-validation.js`                 | Full-run schema, timestamp, sample-rate, missingness, and dropout preflight          |
 | `src/audit-log.js`                       | Append-only SHA-256 event chain                                                    |
 | `samples/`                               | Clean and corrupted example laps                                                   |
 | `test/`                                  | Decision, audit, and workflow tests                                                |
 | `docs/`                                  | Architecture decisions and milestone gates                                         |
+| `evidence/`                              | Sanitized milestone results from the ignored local telemetry copy                   |
 
 ## Deliberate limitations
 

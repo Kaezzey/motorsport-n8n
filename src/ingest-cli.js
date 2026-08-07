@@ -1,5 +1,7 @@
 import { ingestFolder } from './folder-ingest.js';
 import { ingestWorkbenchCollection } from './workbench-ingest.js';
+import { loadPolicy } from './config.js';
+import { storeFileValidationReport } from './file-report-store.js';
 
 function parseArguments(arguments_) {
   const parsed = {
@@ -48,6 +50,7 @@ async function submitToN8n(webhookUrl, payload) {
 
 try {
   const arguments_ = parseArguments(process.argv.slice(2));
+  const policy = await loadPolicy();
   const submitLap = arguments_.dryRun
     ? async () => ({ decision: 'prepared', run_id: null, summary: 'Dry run: payload prepared but not submitted to n8n.' })
     : (payload) => submitToN8n(arguments_.webhookUrl, payload);
@@ -59,7 +62,9 @@ try {
       report = await ingestWorkbenchCollection(arguments_.folder, {
         submitLap,
         purpose: arguments_.purpose,
-        limit: arguments_.limit
+        limit: arguments_.limit,
+        fileValidationPolicy: policy.file_validation,
+        onFileReport: storeFileValidationReport
       });
     } catch (error) {
       if (!error.message.startsWith('No motorsport-ml/run-manifest manifests found')) throw error;

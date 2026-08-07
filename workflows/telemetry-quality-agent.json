@@ -1,10 +1,10 @@
 {
   "id": "TelemetryQualityAgentWeek1",
-  "name": "Telemetry Quality Agent - Week 1 Prototype",
+  "name": "Telemetry Quality Agent - Milestone 2",
   "nodes": [
     {
       "parameters": {
-        "content": "## Bounded telemetry agent\nReceives one canonical lap, delegates deterministic diagnostics, then gates downstream work. Every validation is recorded by the telemetry service and every orchestration run is retained by n8n.",
+        "content": "## Bounded telemetry agent — Milestone 2\nReceives one canonical lap after the source run passes full-file preflight, delegates deterministic diagnostics, then gates downstream work. The preflight report hash travels with the lap, every validation is recorded by the telemetry service, and every orchestration run is retained by n8n.",
         "height": 250,
         "width": 380,
         "color": 5

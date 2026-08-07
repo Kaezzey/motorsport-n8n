@@ -63,6 +63,9 @@ export function validateTelemetry(payload, policy, options = {}) {
   const missingTopLevel = policy.required_top_level.filter((field) => payload?.[field] === undefined || payload?.[field] === null);
   record('schema.required', 'error', missingTopLevel.length === 0, missingTopLevel.length ? `Missing required fields: ${missingTopLevel.join(', ')}` : 'Required envelope fields are present', { missing_fields: missingTopLevel });
 
+  const schemaVersionPassed = payload?.schema_version === '1.0';
+  record('schema.version', 'error', schemaVersionPassed, schemaVersionPassed ? 'Canonical telemetry schema version 1.0' : `Unsupported canonical schema version: ${payload?.schema_version ?? 'missing'}`);
+
   const purposeAllowed = policy.allowed_purposes.includes(payload?.purpose);
   record('schema.purpose', 'error', purposeAllowed, purposeAllowed ? `Purpose ${payload.purpose} is allowed` : `Purpose must be one of: ${policy.allowed_purposes.join(', ')}`);
 
@@ -71,6 +74,10 @@ export function validateTelemetry(payload, policy, options = {}) {
   const manifestMatchConfidence = payload?.provenance?.manifest_match_confidence;
   const manifestConfidencePassed = manifestMatchConfidence === undefined || manifestMatchConfidence !== 'low';
   record('manifest.match_confidence', 'warning', manifestConfidencePassed, manifestConfidencePassed ? `Manifest match confidence is ${manifestMatchConfidence ?? 'not supplied'}` : 'Upstream run matching confidence is low');
+
+  const fileValidationDecision = payload?.provenance?.file_validation?.decision;
+  record('file.validation_reject', 'error', fileValidationDecision !== 'reject', fileValidationDecision === 'reject' ? 'Upstream file preflight rejected this source file' : `File preflight decision is ${fileValidationDecision ?? 'not supplied'}`);
+  record('file.validation_review', 'warning', fileValidationDecision !== 'review', fileValidationDecision === 'review' ? 'Upstream file preflight requires human review' : 'File preflight does not require review');
 
   record('samples.minimum', 'error', samples.length >= thresholds.minimum_samples, samples.length >= thresholds.minimum_samples ? `${samples.length} samples available` : `At least ${thresholds.minimum_samples} samples are required`, { sample_count: samples.length });
 

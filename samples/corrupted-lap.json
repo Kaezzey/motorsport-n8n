@@ -1,4 +1,5 @@
 {
+  "schema_version": "1.0",
   "session_id": "2026-08-05-hampton-downs-test",
   "lap_id": "lap-08-corrupt",
   "purpose": "model_training",
