@@ -1,0 +1,74 @@
+{
+  "profile_id": "queensland-raceway-lap-context-v1",
+  "profile_version": "1.0",
+  "status": "prototype_calibrated",
+  "scope": {
+    "track_names": ["Queensland Raceway"],
+    "vehicle_code": "N9115",
+    "calibration_event": "T07_QUE_250729",
+    "calibration_runs": 15,
+    "calibration_laps": 123
+  },
+  "segmentation": {
+    "source": "PDS Lap Number (-)",
+    "start_finish": {
+      "latitude_deg": -27.69056,
+      "longitude_deg": 152.65462,
+      "radius_m": 35
+    },
+    "minimum_lap_duration_ms": 60000,
+    "maximum_lap_duration_ms": 140000,
+    "last_lap_may_end_in_pit": true
+  },
+  "classification": {
+    "feature_window_ms": 1000,
+    "minimum_confidence": 0.75,
+    "minimum_score_margin": 0.15,
+    "slow_boundary_speed_kph": 80,
+    "racing_boundary_speed_kph": 150,
+    "minimum_boundary_speed_change_kph": 80,
+    "push_duration_ms": [65000, 85000],
+    "long_lap_duration_ms": 85000,
+    "push_peak_speed_kph": 180,
+    "push_throttle_pct": 60,
+    "push_throttle_ratio": 0.25,
+    "installation_peak_speed_kph": 120,
+    "installation_mean_speed_kph": 60
+  },
+  "abnormal_events": {
+    "maximum_evidence_events": 20,
+    "vehicle_stop": {
+      "maximum_speed_kph": 5,
+      "minimum_duration_ms": 2000
+    },
+    "wheel_lock_candidate": {
+      "minimum_vehicle_speed_kph": 60,
+      "minimum_wheel_deficit_kph": 30,
+      "minimum_affected_wheels": 2,
+      "minimum_duration_ms": 100
+    },
+    "wheelspin_candidate": {
+      "minimum_vehicle_speed_kph": 40,
+      "minimum_rear_surplus_kph": 30,
+      "minimum_duration_ms": 100
+    },
+    "course_excursion": {
+      "latitude_deg": [-27.70, -27.68],
+      "longitude_deg": [152.64, 152.67],
+      "minimum_duration_ms": 500
+    }
+  },
+  "reference_labels": {
+    "origin": "run-sequence weak labels, independent of telemetry classifier features",
+    "first_lap": "out_lap",
+    "middle_lap": "push_lap",
+    "last_lap": "in_lap",
+    "single_lap_run": "unknown"
+  },
+  "calibration_evidence": {
+    "first_laps": { "count": 15, "mean_duration_s": 91.6227, "minimum_duration_s": 81.5, "maximum_duration_s": 121.85, "mean_start_speed_kph": 38.6, "mean_end_speed_kph": 194.68 },
+    "middle_laps": { "count": 93, "mean_duration_s": 71.0584, "minimum_duration_s": 69.05, "maximum_duration_s": 88.81, "mean_start_speed_kph": 201.129, "mean_end_speed_kph": 202.212 },
+    "last_laps": { "count": 15, "mean_duration_s": 91.8413, "minimum_duration_s": 85.56, "maximum_duration_s": 112.58, "mean_start_speed_kph": 202.507, "mean_end_speed_kph": 0.0667 },
+    "labels_are_not_engineer_ground_truth": true
+  }
+}

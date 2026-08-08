@@ -85,6 +85,7 @@ const server = createServer(async (request, response) => {
         status: 'ok',
         policy_id: policy.policy_id,
         sensor_profile_id: policy.sensor_quality_profile?.profile_id ?? null,
+        lap_context_profile_id: policy.lap_context_profile?.profile_id ?? null,
         audit_log: auditPath
       });
     }

@@ -1,10 +1,10 @@
 {
   "id": "TelemetryQualityAgentWeek1",
-  "name": "Telemetry Quality Agent - Milestone 3",
+  "name": "Telemetry Quality Agent - Milestone 4",
   "nodes": [
     {
       "parameters": {
-        "content": "## Bounded telemetry agent — Milestone 3\nReceives one canonical lap after full-file preflight, applies a versioned vehicle/logger sensor profile, then gates downstream work. Duration-aware frozen, elapsed-time derivative, spike/recovery, dropout, and GPS evidence remains traceable to the source report and human-owned policy.",
+        "content": "## Bounded telemetry agent — Milestone 4\nReceives one canonical lap after full-file preflight, applies versioned sensor and track-context profiles, then gates downstream work. Track boundary evidence, independently derived sequence labels, confidence calibration, abnormal-event candidates, and all earlier sensor evidence remain auditable and human-reviewable.",
         "height": 250,
         "width": 380,
         "color": 5

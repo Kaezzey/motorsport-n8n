@@ -36,7 +36,13 @@ try {
     const outputPath = resolve(arguments_.output);
     await mkdir(dirname(outputPath), { recursive: true });
     await writeFile(outputPath, serialized, 'utf8');
-    console.log(JSON.stringify({ output: outputPath, policy_id: policy.policy_id, profile_id: policy.sensor_quality_profile?.profile_id, counts: report.counts }, null, 2));
+    console.log(JSON.stringify({
+      output: outputPath,
+      policy_id: policy.policy_id,
+      sensor_profile_id: policy.sensor_quality_profile?.profile_id,
+      lap_context_profile_id: policy.lap_context_profile?.profile_id,
+      counts: report.counts
+    }, null, 2));
   } else {
     console.log(serialized.trimEnd());
   }

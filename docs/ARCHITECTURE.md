@@ -7,10 +7,10 @@ The system separates orchestration from decision evidence:
 1. The ingestion adapter verifies the Workbench manifest and source-file SHA-256.
 2. A streaming full-run preflight checks schema, timestamps, sampling, missingness, and dropout intervals.
 3. Rejected files stop before lap segmentation; review-level files mark every derived lap for review.
-4. Accepted or review-level files are segmented into canonical schema v1.0 laps.
+4. Accepted or review-level files are segmented by the source lap number, then their boundaries are checked against the track geofence and duration profile.
 5. n8n receives each lap and records the workflow execution.
-6. The telemetry service loads a versioned, human-owned policy and its vehicle/logger sensor profile.
-7. The controller runs baseline checks plus duration-aware sensor and GPS diagnostics, then selects allow-listed follow-up investigations when evidence warrants them.
+6. The telemetry service loads a versioned, human-owned policy plus vehicle/logger and lap-context profiles.
+7. The controller runs baseline checks, duration-aware sensor/GPS diagnostics, track-boundary validation, lap classification, and abnormal-event detection, then selects allow-listed follow-up investigations when evidence warrants them.
 8. Deterministic gates produce `accept`, `review`, or `reject`.
 9. n8n permits only `accept` to reach the downstream placeholder.
 10. The service appends the decision to a hash-linked audit log.
@@ -34,9 +34,11 @@ stateDiagram-v2
     Quarantined --> [*]
 ```
 
-File hard failures include missing or duplicate columns, malformed row widths, timestamp duplicates or resets, missing timestamps, and excessive channel missingness. File-level timestamp gaps, sample-rate deviation, and long sparse dropouts request review. Lap hard failures include unsupported schema or purpose, rejected file provenance, too few samples, excessive missing channel data, unit mismatch, non-monotonic timestamps, and physical-range violations. Frozen intervals, excessive derivative rates, isolated spike/recovery events, long lap-level dropouts, and suspect GPS request review. Decision rules are explicit in `config/policy.json`; vehicle/logger assumptions live separately in `config/vehicle-profile.json`.
+File hard failures include missing or duplicate columns, malformed row widths, timestamp duplicates or resets, missing timestamps, and excessive channel missingness. File-level timestamp gaps, sample-rate deviation, and long sparse dropouts request review. Lap hard failures include unsupported schema or purpose, rejected file provenance, too few samples, excessive missing channel data, unit mismatch, non-monotonic timestamps, and physical-range violations. Frozen intervals, excessive derivative rates, isolated spike/recovery events, long lap-level dropouts, suspect GPS, boundary mismatches, uncertain or disagreeing lap classifications, and abnormal-event candidates request review. Decision rules are explicit in `config/policy.json`; vehicle/logger assumptions live in `config/vehicle-profile.json`, and track/context assumptions live in `config/lap-context-profile.json`.
 
 The sensor profile does not derive physical safety bounds automatically from observed extrema. It records the copied event's ranges as calibration evidence while keeping the actionable bounds and diagnostic thresholds explicit and reviewable by a human.
+
+Run position supplies an independent weak reference label: first=`out_lap`, middle=`push_lap`, last=`in_lap`. The telemetry classifier does not use that label as an input. It scores duration, start/end speed, peak speed, and throttle features, then compares its output with the reference. Disagreement never silently changes the label; it requests review. These weak labels are useful for prototype calibration but are not a substitute for engineer annotation.
 
 ## Audit model
 
@@ -64,6 +66,7 @@ Telemetry validity is primarily numerical and policy-driven. An LLM would add va
 - Mean wheel-speed difference does not yet distinguish lock-up, wheelspin, tyre-radius differences, or cornering geometry.
 - Frozen detection is duration- and activity-gated, but a threshold can still confuse valid steady state with a stuck sensor.
 - Current real-data findings have not yet been labelled by a motorsport engineer; they are diagnostic candidates, not ground truth.
+- The start/finish geofence and confidence bands are calibrated on one event at one track and must not be assumed portable.
 - A hash chain is tamper-evident only if its trusted head is retained separately.
 - Content-addressed preflight reports are local files, not immutable external retention.
 

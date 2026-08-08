@@ -1,0 +1,79 @@
+{
+  "evidence_version": "1.0",
+  "milestone": 4,
+  "generated_at": "2026-08-08T16:48:03.238Z",
+  "policy_id": "milestone-4-lap-context-gate-v1",
+  "policy_sha256": "7d3e7d8e381ca3fcd05bd5fcbba4c53e6f0cd117763116d8bbac342b026133d6",
+  "sensor_profile_id": "n9115-workbench-logger-v1",
+  "sensor_profile_sha256": "57b98959d451441ae1a0ebdd6e81dc3c95f54604a9fe6555399d62026513890a",
+  "lap_context_profile_id": "queensland-raceway-lap-context-v1",
+  "lap_context_profile_sha256": "304879dd1f2cdfa3efbfc93269ab2e48f7342835a46fe42e5bce65b1fd28a9ea",
+  "local_evaluation_sha256": "394280c901b606f3a8381e3e62a237556c55e7a088b25010a8ad31aca2e989c9",
+  "source": {
+    "description": "Ignored local copy of one Motorsport Workbench manifest collection",
+    "original_source_modified": false,
+    "run_count": 15,
+    "lap_count": 123,
+    "sample_count": 936162,
+    "track": "Queensland Raceway"
+  },
+  "track_aware_segmentation": {
+    "method": "PDS lap number plus start-finish geofence and duration validation",
+    "validated": 123,
+    "suspect": 0
+  },
+  "independent_reference_labels": {
+    "origin": "Run position weak labels, calculated independently of telemetry classifier features",
+    "out_lap": 15,
+    "push_lap": 93,
+    "in_lap": 15,
+    "engineer_ground_truth": false
+  },
+  "classifier_output": {
+    "out_lap": 16,
+    "push_lap": 92,
+    "in_lap": 15,
+    "agreement_count": 122,
+    "disagreement_count": 1,
+    "agreement_ratio": 0.991869918699187,
+    "confusion": {
+      "out_lap": { "out_lap": 15 },
+      "push_lap": { "push_lap": 92, "out_lap": 1 },
+      "in_lap": { "in_lap": 15 }
+    }
+  },
+  "confidence_calibration": {
+    "high": { "count": 117, "reference_agreements": 117, "empirical_agreement_ratio": 1 },
+    "medium": { "count": 5, "reference_agreements": 5, "empirical_agreement_ratio": 1 },
+    "low": { "count": 1, "reference_agreements": 0, "empirical_agreement_ratio": 0 },
+    "classification_review_count": 6,
+    "policy": "Review when confidence is below 0.75 or the top-two score margin is below 0.15"
+  },
+  "abnormal_event_taxonomy": [
+    "vehicle_stop",
+    "wheel_lock_candidate",
+    "wheelspin_candidate",
+    "course_excursion"
+  ],
+  "abnormal_events": {
+    "total": 16,
+    "vehicle_stop": 14,
+    "wheelspin_candidate": 2,
+    "review_event_count": 2,
+    "laps_requiring_abnormal_event_review": 2
+  },
+  "decisions": {
+    "accept": 0,
+    "review": 123,
+    "reject": 0,
+    "downstream_authorized": 0
+  },
+  "interpretation": [
+    "The single classifier/reference disagreement is in the low-confidence band and is automatically routed to review.",
+    "Five correct classifications are also conservatively reviewed because the winning score margin is below policy.",
+    "Fourteen vehicle-stop events are context-expected near the end of in-laps and do not independently request review.",
+    "Two wheelspin candidates request review; they are diagnostic candidates rather than confirmed incidents.",
+    "All laps already require review for the known Milestone 3 yaw and accelerometer findings, so none is authorized downstream."
+  ],
+  "reproduce": "npm run evaluate -- data/incoming-manifests --output .local/milestone-4-evaluation.json"
+}

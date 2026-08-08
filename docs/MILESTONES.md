@@ -62,14 +62,25 @@ Pause-gate questions:
 - Which GPS jump threshold is appropriate for the logger update/interpolation strategy?
 - Should sensor findings remain mandatory `review`, or should any become a hard rejection for model-training use?
 
-## Milestone 4 — Lap-context analysis
+## Milestone 4 — Lap-context analysis (implemented)
 
-Planned evidence:
+Evidence in this repository:
 
-- track-aware lap segmentation;
-- independently labelled out-lap, in-lap, and push-lap set;
-- abnormal-event taxonomy;
-- confidence calibration and low-confidence review routing.
+- source `PDS Lap Number` boundaries validated against a Queensland Raceway start/finish geofence and duration profile;
+- last-lap pit termination handled explicitly rather than treated as a broken boundary;
+- 123 run-sequence weak reference labels produced independently of classifier telemetry features;
+- feature-based out-lap, push-lap, in-lap, and installation-lap scoring with evidence and score margins;
+- empirical confidence bands and mandatory low-confidence or disagreement review routing;
+- bounded taxonomy for vehicle stops, wheel-lock candidates, wheelspin candidates, and course excursions;
+- 29 automated tests including classification, boundary, low-confidence, and abnormal-event cases;
+- sanitized full-session evaluation in `evidence/milestone-4-summary.json` and per-lap labels in `evidence/milestone-4-labelled-laps.json`.
+
+Pause-gate questions:
+
+- Should the run-position weak labels be replaced or supplemented with engineer-reviewed labels?
+- Is a 35 m start/finish geofence appropriate for this GPS logger and track layout?
+- Should the six narrow-margin classifications remain review-only even though five agree with the weak labels?
+- Are the two detected wheelspin candidates genuine events, logger artefacts, or expected race behaviour?
 
 ## Milestone 5 — Cross-channel diagnostics
 
@@ -113,4 +124,4 @@ Planned evidence:
 
 ## Prototype status versus milestone status
 
-The prototype contains intentionally basic versions of checks from Milestones 4–5 so the complete control loop can be demonstrated. Those milestones are not marked complete: each still needs real telemetry, domain labels, calibration, and acceptance evidence.
+The prototype contains intentionally basic versions of checks from Milestone 5 so the complete control loop can be demonstrated. That milestone is not marked complete: it still needs real telemetry, domain labels, calibration, and acceptance evidence.

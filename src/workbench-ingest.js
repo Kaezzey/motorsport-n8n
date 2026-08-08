@@ -83,6 +83,18 @@ async function* readLapsFromRunCsv(path) {
   let indices;
   let activeLapNumber = null;
   let samples = [];
+  let pendingLap = null;
+  let completedLapCount = 0;
+
+  const completeLap = () => {
+    const firstTimestamp = samples[0]?.timestamp_ms ?? 0;
+    completedLapCount += 1;
+    return {
+      lapNumber: activeLapNumber,
+      lapIndex: completedLapCount,
+      samples: samples.map((sample) => ({ ...sample, timestamp_ms: sample.timestamp_ms === null ? null : sample.timestamp_ms - firstTimestamp }))
+    };
+  };
 
   for await (const line of lines) {
     if (!indices) {
@@ -94,8 +106,9 @@ async function* readLapsFromRunCsv(path) {
     const lapNumber = fields[indices[lapNumberColumn]]?.trim();
     if (!lapNumber) continue;
     if (activeLapNumber !== null && lapNumber !== activeLapNumber) {
-      const firstTimestamp = samples[0]?.timestamp_ms ?? 0;
-      yield { lapNumber: activeLapNumber, samples: samples.map((sample) => ({ ...sample, timestamp_ms: sample.timestamp_ms === null ? null : sample.timestamp_ms - firstTimestamp })) };
+      const completed = completeLap();
+      if (pendingLap) yield { ...pendingLap, isFirst: pendingLap.lapIndex === 1, isLast: false };
+      pendingLap = completed;
       samples = [];
     }
     activeLapNumber = lapNumber;
@@ -103,8 +116,9 @@ async function* readLapsFromRunCsv(path) {
   }
 
   if (activeLapNumber !== null && samples.length) {
-    const firstTimestamp = samples[0]?.timestamp_ms ?? 0;
-    yield { lapNumber: activeLapNumber, samples: samples.map((sample) => ({ ...sample, timestamp_ms: sample.timestamp_ms === null ? null : sample.timestamp_ms - firstTimestamp })) };
+    const finalLap = completeLap();
+    if (pendingLap) yield { ...pendingLap, isFirst: pendingLap.lapIndex === 1, isLast: false };
+    yield { ...finalLap, isFirst: finalLap.lapIndex === 1, isLast: true };
   }
 }
 
@@ -166,6 +180,7 @@ function compactFileValidation(report) {
 }
 
 function createPayload(manifest, run, lap, purpose, source, fileValidation) {
+  const referenceLabel = lap.isFirst && lap.isLast ? 'unknown' : lap.isFirst ? 'out_lap' : lap.isLast ? 'in_lap' : 'push_lap';
   return {
     schema_version: '1.0',
     session_id: `${run.event}::${run.session}`,
@@ -188,6 +203,15 @@ function createPayload(manifest, run, lap, purpose, source, fileValidation) {
       manifest_review_required: run.review_required,
       manifest_match_confidence: run.match_confidence,
       setup_hash: run.setup_hash,
+      lap_sequence: {
+        lap_index: lap.lapIndex,
+        source_lap_number: lap.lapNumber,
+        is_first: lap.isFirst,
+        is_last: lap.isLast,
+        boundary_source: lapNumberColumn,
+        reference_label: referenceLabel,
+        reference_label_origin: 'run_sequence_weak_label'
+      },
       source_file: basename(source.path),
       source_sha256: source.sha256,
       file_validation: compactFileValidation(fileValidation)

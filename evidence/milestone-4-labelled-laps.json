@@ -1,0 +1,1238 @@
+{
+  "evidence_version": "1.0",
+  "milestone": 4,
+  "label_origin": "run_sequence_weak_label",
+  "description": "Reference labels are derived from run position independently of classifier telemetry features; they are not engineer ground truth.",
+  "labels": [
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.9,
+      "score_margin": 0.75,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.5499999999999999,
+      "score_margin": 0.04999999999999993,
+      "confidence_band": "low",
+      "agrees": false,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 1::LAP 10",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 2::LAP 7",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 3::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.85,
+      "score_margin": 0.09999999999999998,
+      "confidence_band": "medium",
+      "agrees": true,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 3::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 3::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 3::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 3::LAP 5",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 4::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 4::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 4::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 4::LAP 4",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 10",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 11",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 12",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 5::LAP 13",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.85,
+      "score_margin": 0.09999999999999998,
+      "confidence_band": "medium",
+      "agrees": true,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 6::LAP 8",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 7::LAP 6",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 8::LAP 6",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 9::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.85,
+      "score_margin": 0.09999999999999998,
+      "confidence_band": "medium",
+      "agrees": true,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 9::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 9::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 9::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 9::LAP 5",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.85,
+      "score_margin": 0.09999999999999998,
+      "confidence_band": "medium",
+      "agrees": true,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 10::LAP 6",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 10",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 11::LAP 11",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 12::LAP 10",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 10",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 11",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 13::LAP 12",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 9",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 10",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 14::LAP 11",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 1",
+      "reference_label": "out_lap",
+      "classifier_label": "out_lap",
+      "confidence": 0.85,
+      "score_margin": 0.09999999999999998,
+      "confidence_band": "medium",
+      "agrees": true,
+      "classification_passed": false
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 2",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 3",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 4",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 5",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 6",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 7",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 8",
+      "reference_label": "push_lap",
+      "classifier_label": "push_lap",
+      "confidence": 0.99,
+      "score_margin": 0.9,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    },
+    {
+      "lap_id": "25PCCA-T07-QUE::SE1::RUN 15::LAP 9",
+      "reference_label": "in_lap",
+      "classifier_label": "in_lap",
+      "confidence": 0.99,
+      "score_margin": 0.5,
+      "confidence_band": "high",
+      "agrees": true,
+      "classification_passed": true
+    }
+  ]
+}

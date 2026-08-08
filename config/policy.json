@@ -1,6 +1,7 @@
 {
-  "policy_id": "milestone-3-sensor-quality-gate-v1",
+  "policy_id": "milestone-4-lap-context-gate-v1",
   "sensor_quality_profile_path": "./vehicle-profile.json",
+  "lap_context_profile_path": "./lap-context-profile.json",
   "required_top_level": [
     "schema_version",
     "session_id",
@@ -83,7 +84,11 @@
     "signals.derivative_rate",
     "signals.spikes",
     "signals.dropouts",
-    "gps.validity"
+    "gps.validity",
+    "context.segmentation",
+    "context.classification_confidence",
+    "context.reference_agreement",
+    "context.abnormal_events"
   ],
   "file_validation": {
     "timestamp_gap_multiplier": 5,

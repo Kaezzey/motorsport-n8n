@@ -82,8 +82,13 @@ test('Workbench collection adapter verifies, segments, maps, and hydrates laps',
   assert.equal(submitted[0].purpose, 'model_training');
   assert.equal(submitted[0].provenance.source_file, 'run-1.csv');
   assert.equal(submitted[0].provenance.file_validation.decision, 'accept');
+  assert.equal(submitted[0].provenance.lap_sequence.is_first, true);
+  assert.equal(submitted[0].provenance.lap_sequence.is_last, false);
+  assert.equal(submitted[0].provenance.lap_sequence.reference_label, 'out_lap');
   assert.match(submitted[0].provenance.file_validation.report_sha256, /^[a-f0-9]{64}$/);
   assert.equal(submitted[1].lap_id, 'EVENT::SE1::RUN 1::LAP 2');
+  assert.equal(submitted[1].provenance.lap_sequence.is_last, true);
+  assert.equal(submitted[1].provenance.lap_sequence.reference_label, 'in_lap');
 });
 
 test('Workbench collection adapter blocks a run with a mismatched hash', async (context) => {

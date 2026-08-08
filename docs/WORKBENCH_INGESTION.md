@@ -12,6 +12,7 @@ The adapter understands the existing Workbench output:
 - portable run files under each event's `runs/` directory;
 - `historical_data_csv_sha256` integrity checks;
 - lap boundaries from `PDS Lap Number (-)`;
+- buffered first/middle/last sequence metadata so the final lap is known without loading a complete run into memory;
 - 100 Hz logger samples.
 
 Absolute paths embedded in the manifest are not followed. The adapter uses only the basename to resolve `EVENT_FOLDER/runs/FILENAME`, then verifies the resolved file remains inside the copied event folder. This makes the copy portable and prevents a manifest from reading arbitrary files.
@@ -55,10 +56,10 @@ Inspect and prepare two laps without contacting n8n:
 npm run ingest -- data/incoming-manifests --dry-run --limit 2
 ```
 
-Run the complete local sensor-quality evaluation without contacting n8n or appending audit events:
+Run the complete local sensor and lap-context evaluation without contacting n8n or appending audit events:
 
 ```bash
-npm run evaluate -- data/incoming-manifests --output .local/milestone-3-evaluation.json
+npm run evaluate -- data/incoming-manifests --output .local/milestone-4-evaluation.json
 ```
 
 With the telemetry service and n8n running, submit one real lap:
@@ -73,4 +74,4 @@ Submit the complete copied collection:
 npm run ingest -- data/incoming-manifests --purpose driver_coaching
 ```
 
-The adapter processes laps sequentially. `include: false` runs are skipped, hash failures become `ingestion_error`, and manifest `review_required: true` or low match confidence forces human review even if the telemetry checks otherwise pass.
+The adapter processes laps sequentially while retaining at most the active and pending lap. Each payload records its source lap number, run position, boundary source, and an independent sequence weak label. `include: false` runs are skipped, hash failures become `ingestion_error`, and manifest `review_required: true` or low match confidence forces human review even if the telemetry checks otherwise pass.

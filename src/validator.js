@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { analyzeSensorQuality } from './sensor-quality.js';
+import { analyzeLapContext } from './lap-context.js';
 
 const mean = (values) => values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
 
@@ -30,29 +31,6 @@ export function canonicalStringify(value) {
 
 export function sha256(value) {
   return createHash('sha256').update(typeof value === 'string' ? value : canonicalStringify(value)).digest('hex');
-}
-
-function classifyLap(samples) {
-  const speeds = finiteValues(samples, 'speed_kph');
-  const throttles = finiteValues(samples, 'throttle_pct');
-  if (!speeds.length) return { label: 'unknown', confidence: 0, evidence: ['No usable speed samples'] };
-
-  const windowSize = Math.max(1, Math.ceil(speeds.length * 0.2));
-  const startSpeed = mean(speeds.slice(0, windowSize));
-  const endSpeed = mean(speeds.slice(-windowSize));
-  const maximumSpeed = Math.max(...speeds);
-  const meanThrottle = mean(throttles);
-
-  if (startSpeed < 50 && endSpeed - startSpeed > 35) {
-    return { label: 'out_lap', confidence: 0.82, evidence: [`Speed builds from ${startSpeed.toFixed(1)} to ${endSpeed.toFixed(1)} km/h`] };
-  }
-  if (endSpeed < 60 && startSpeed - endSpeed > 35) {
-    return { label: 'in_lap', confidence: 0.82, evidence: [`Speed falls from ${startSpeed.toFixed(1)} to ${endSpeed.toFixed(1)} km/h`] };
-  }
-  if (maximumSpeed > 100 && meanThrottle > 35) {
-    return { label: 'push_lap', confidence: 0.76, evidence: [`Peak speed ${maximumSpeed.toFixed(1)} km/h`, `Mean throttle ${meanThrottle.toFixed(1)}%`] };
-  }
-  return { label: 'installation_lap', confidence: 0.6, evidence: ['No strong out-lap, in-lap, or push-lap signature'] };
 }
 
 export function validateTelemetry(payload, policy, options = {}) {
@@ -165,6 +143,45 @@ export function validateTelemetry(payload, policy, options = {}) {
     sensorQuality.gps.metrics
   );
 
+  const lapContext = analyzeLapContext(samples, policy.lap_context_profile, payload?.provenance);
+  record(
+    'context.segmentation',
+    'warning',
+    lapContext.segmentation.passed,
+    lapContext.segmentation.status === 'not_applicable'
+      ? lapContext.segmentation.reason
+      : lapContext.segmentation.passed ? 'Source lap boundary agrees with the configured track and duration profile' : 'Lap boundary or duration is inconsistent with the configured track profile',
+    lapContext.segmentation
+  );
+  record(
+    'context.classification_confidence',
+    'warning',
+    lapContext.classification.passed,
+    !lapContext.classification.context_applicable
+      ? 'Track-aware classification confidence is not enforced without source lap-sequence context'
+      : lapContext.classification.passed
+        ? `${lapContext.classification.label} classification meets confidence and score-margin policy`
+        : `${lapContext.classification.label} classification is below the configured confidence or score-margin gate`,
+    lapContext.classification
+  );
+  const referencePassed = !lapContext.reference.available || lapContext.reference.agrees;
+  record(
+    'context.reference_agreement',
+    'warning',
+    referencePassed,
+    !lapContext.reference.available
+      ? 'No independent lap-sequence reference label is available'
+      : referencePassed ? 'Telemetry classification agrees with the independent sequence reference' : `Telemetry classification ${lapContext.classification.label} disagrees with sequence reference ${lapContext.reference.label}`,
+    lapContext.reference
+  );
+  record(
+    'context.abnormal_events',
+    'warning',
+    lapContext.abnormal_events.passed,
+    lapContext.abnormal_events.passed ? `${lapContext.abnormal_events.event_count} contextual event(s), none requiring review` : `${lapContext.abnormal_events.review_event_count} abnormal event candidate(s) require review`,
+    lapContext.abnormal_events
+  );
+
   const wheelDeltas = samples.flatMap((sample) => ['wheel_speed_fl_kph', 'wheel_speed_fr_kph', 'wheel_speed_rl_kph', 'wheel_speed_rr_kph']
     .map((channel) => Number.isFinite(sample?.[channel]) && Number.isFinite(sample?.speed_kph) ? Math.abs(sample[channel] - sample.speed_kph) : null)
     .filter((value) => value !== null));
@@ -198,9 +215,12 @@ export function validateTelemetry(payload, policy, options = {}) {
   if (brakingSamples.length) selectedDiagnostics.push('brake_deceleration_alignment');
   if (steeringEvents.length) selectedDiagnostics.push('steering_yaw_alignment');
   if (movingSamples.length) selectedDiagnostics.push('rpm_speed_gear_consistency');
+  if (lapContext.classification.context_applicable) selectedDiagnostics.push('track_aware_lap_context');
+  if (!lapContext.segmentation.passed) selectedDiagnostics.push('lap_boundary_investigation');
+  if (!lapContext.classification.passed || !referencePassed) selectedDiagnostics.push('lap_classification_review');
+  if (!lapContext.abnormal_events.passed) selectedDiagnostics.push('abnormal_event_investigation');
 
   const runId = options.runId ?? randomUUID();
-  const classification = classifyLap(samples);
   const result = {
     run_id: runId,
     evaluated_at: options.now ?? new Date().toISOString(),
@@ -219,7 +239,8 @@ export function validateTelemetry(payload, policy, options = {}) {
       allowed_actions: ['accept', 'reject', 'request_human_review'],
       downstream_processing_authorized: decision === 'accept'
     },
-    lap_classification: classification,
+    lap_classification: lapContext.classification,
+    lap_context: lapContext,
     sensor_quality: sensorQuality,
     decision,
     reason_codes: [...hardFailures, ...failedWarnings].map((check) => check.id),
